@@ -33,11 +33,10 @@
 
 - (void)runAsync {
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [NSThread sleepForTimeInterval:5.0f];
-        
+        [NSThread sleepForTimeInterval:10.0f];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"foo();"];
-            if ([result  isEqual: @"your turn"]) {
+            if ([result  isEqual: @"725"]) {
                 self.webView.hidden = NO;
                 
                 CustomerLogic* customer = [[CustomerLogic alloc]init];
@@ -46,14 +45,12 @@
                 Turn* turnToken = [[Turn alloc]initWithQueueNumber:result];
                 [self.yourTurnDelegate notifyYourTurn:turnToken];
             }
-        });
-        
-        [NSThread sleepForTimeInterval:5.0f];
-        dispatch_async(dispatch_get_main_queue(), ^{
+
+            
             self.webView.hidden = YES;
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn"
-                                                            message:@"Your are through the queue and can continue shopping."
+                                                            message: [NSString stringWithFormat: @"You are through the queue. Your queue number is %@", result]
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];

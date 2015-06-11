@@ -6,15 +6,15 @@
         <h3>Queue-it page</h3>
         <span id='state'></span><br/>
         <script type="text/javascript">
-            var i=1;
+            var queueNum=725;
             var j = 4;
             var res="";
             setInterval(function(){
                         j = j - 1;
-                        document.getElementById('state').innerHTML = "Your turn will be in: " + j + " seconds";
+                        document.getElementById('state').innerHTML = "Your queue progress: " + j;
                         
-                        if (i==1){
-                            res = "your turn";
+                        if (queueNum ==725){
+                            res = queueNum.toString();
                             }
                         }, 3000);
             
