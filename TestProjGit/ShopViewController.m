@@ -51,6 +51,13 @@
         [NSThread sleepForTimeInterval:5.0f];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.webView.hidden = YES;
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn"
+                                                            message:@"Your are through the queue and can continue shopping."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
         });
     });
 }
