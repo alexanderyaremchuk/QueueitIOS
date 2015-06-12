@@ -26,9 +26,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    
     [self.view addSubview:self.webView];
     
     NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
