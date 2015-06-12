@@ -1,8 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "ShopViewController.h"
+#import "QueueITViewController.h"
 
-@interface CustomerLogic : NSObject<YourTurnDelegate>
-
-
-
+@interface CustomerLogic : NSObject<QueuePassedDelegate>
 @end

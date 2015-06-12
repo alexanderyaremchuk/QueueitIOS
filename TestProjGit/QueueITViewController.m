@@ -1,13 +1,35 @@
-#import "ShopViewController.h"
+#import "QueueITViewController.h"
 #import "CustomerLogic.h"
+#import "QueueITEngine.h"
 
-@interface ShopViewController ()<UIWebViewDelegate>
+@interface QueueITViewController ()<UIWebViewDelegate>
+
+@property (nonatomic) UIWebView* webView;
+@property (nonatomic, strong) UIViewController* host;
+@property (nonatomic, strong) QueueITEngine* engine;
+
 @end
 
-@implementation ShopViewController
+@implementation QueueITViewController
+
+-(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine {
+    self = [super init];
+    if(self) {
+        self.host = host;
+        self.engine = engine;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)];
+    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    
+    [self.view addSubview:self.webView];
     
     NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
     NSURL *url = [NSURL fileURLWithPath:urlAddress];
@@ -37,24 +59,14 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"foo();"];
             if ([result  isEqual: @"725"]) {
-                self.webView.hidden = NO;
-                
                 CustomerLogic* customer = [[CustomerLogic alloc]init];
-                self.yourTurnDelegate = customer;
+                self.engine.queuePassedDelegate = customer;
                 
                 Turn* turnToken = [[Turn alloc]initWithQueueNumber:result];
-                [self.yourTurnDelegate notifyYourTurn:turnToken];
+                [self.engine.queuePassedDelegate notifyYourTurn:turnToken];
+                
+                [self.host dismissModalViewControllerAnimated:YES];
             }
-
-            
-            self.webView.hidden = YES;
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn"
-                                                            message: [NSString stringWithFormat: @"You are through the queue. Your queue number is %@", result]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
         });
     });
 }

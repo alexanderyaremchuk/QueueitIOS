@@ -14,9 +14,11 @@
 		1DCD48991B299B6400C17F94 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD48971B299B6400C17F94 /* LaunchScreen.xib */; };
 		1DCD48A51B299B6400C17F94 /* TestProjGitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48A41B299B6400C17F94 /* TestProjGitTests.m */; };
 		1DCD48F41B29C44900C17F94 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD48F31B29C44900C17F94 /* index.html */; };
-		1DCD48F81B29C48500C17F94 /* ShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48F71B29C48500C17F94 /* ShopViewController.m */; };
+		1DCD48F81B29C48500C17F94 /* QueueITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48F71B29C48500C17F94 /* QueueITViewController.m */; };
 		1DCD48FC1B29C50200C17F94 /* Turn.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48FB1B29C50200C17F94 /* Turn.m */; };
 		1DCD48FF1B29C50D00C17F94 /* CustomerLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48FE1B29C50D00C17F94 /* CustomerLogic.m */; };
+		1DCD49021B2AD29600C17F94 /* ShellViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD49011B2AD29600C17F94 /* ShellViewController.m */; };
+		1DCD49051B2B005400C17F94 /* QueueITEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD49041B2B005400C17F94 /* QueueITEngine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,12 +44,16 @@
 		1DCD48A31B299B6400C17F94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DCD48A41B299B6400C17F94 /* TestProjGitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestProjGitTests.m; sourceTree = "<group>"; };
 		1DCD48F31B29C44900C17F94 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		1DCD48F61B29C48500C17F94 /* ShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopViewController.h; sourceTree = "<group>"; };
-		1DCD48F71B29C48500C17F94 /* ShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopViewController.m; sourceTree = "<group>"; };
+		1DCD48F61B29C48500C17F94 /* QueueITViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueITViewController.h; sourceTree = "<group>"; };
+		1DCD48F71B29C48500C17F94 /* QueueITViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueITViewController.m; sourceTree = "<group>"; };
 		1DCD48FA1B29C50200C17F94 /* Turn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Turn.h; sourceTree = "<group>"; };
 		1DCD48FB1B29C50200C17F94 /* Turn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Turn.m; sourceTree = "<group>"; };
 		1DCD48FD1B29C50D00C17F94 /* CustomerLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerLogic.h; sourceTree = "<group>"; };
 		1DCD48FE1B29C50D00C17F94 /* CustomerLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerLogic.m; sourceTree = "<group>"; };
+		1DCD49001B2AD29600C17F94 /* ShellViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellViewController.h; sourceTree = "<group>"; };
+		1DCD49011B2AD29600C17F94 /* ShellViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShellViewController.m; sourceTree = "<group>"; };
+		1DCD49031B2B005400C17F94 /* QueueITEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueITEngine.h; sourceTree = "<group>"; };
+		1DCD49041B2B005400C17F94 /* QueueITEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueITEngine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +102,8 @@
 				1DCD48951B299B6400C17F94 /* Images.xcassets */,
 				1DCD48971B299B6400C17F94 /* LaunchScreen.xib */,
 				1DCD48881B299B6400C17F94 /* Supporting Files */,
+				1DCD49031B2B005400C17F94 /* QueueITEngine.h */,
+				1DCD49041B2B005400C17F94 /* QueueITEngine.m */,
 			);
 			path = TestProjGit;
 			sourceTree = "<group>";
@@ -139,8 +147,10 @@
 		1DCD48F51B29C46E00C17F94 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1DCD48F61B29C48500C17F94 /* ShopViewController.h */,
-				1DCD48F71B29C48500C17F94 /* ShopViewController.m */,
+				1DCD48F61B29C48500C17F94 /* QueueITViewController.h */,
+				1DCD48F71B29C48500C17F94 /* QueueITViewController.m */,
+				1DCD49001B2AD29600C17F94 /* ShellViewController.h */,
+				1DCD49011B2AD29600C17F94 /* ShellViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -258,9 +268,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DCD48FF1B29C50D00C17F94 /* CustomerLogic.m in Sources */,
+				1DCD49021B2AD29600C17F94 /* ShellViewController.m in Sources */,
 				1DCD488E1B299B6400C17F94 /* AppDelegate.m in Sources */,
-				1DCD48F81B29C48500C17F94 /* ShopViewController.m in Sources */,
+				1DCD48F81B29C48500C17F94 /* QueueITViewController.m in Sources */,
 				1DCD48FC1B29C50200C17F94 /* Turn.m in Sources */,
+				1DCD49051B2B005400C17F94 /* QueueITEngine.m in Sources */,
 				1DCD488B1B299B6400C17F94 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,6 +468,7 @@
 				1DCD48AA1B299B6400C17F94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1DCD48AB1B299B6400C17F94 /* Build configuration list for PBXNativeTarget "TestProjGitTests" */ = {
 			isa = XCConfigurationList;
@@ -464,6 +477,7 @@
 				1DCD48AD1B299B6400C17F94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
