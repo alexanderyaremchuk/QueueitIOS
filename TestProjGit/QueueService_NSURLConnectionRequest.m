@@ -72,6 +72,10 @@
 {
     NSURLRequest *request = [connection originalRequest];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.successCallback(self.data);
+    });
+    
     if (self.data) {
         NSError *jsonError = nil;
         id json = [NSJSONSerialization JSONObjectWithData:self.data options:0 error:&jsonError];
@@ -83,9 +87,9 @@
         }
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    //dispatch_async(dispatch_get_main_queue(), ^{
         //self.failureCallback(error);
-    });
+    //});
     
     [self.delegate requestDidComplete:self];
 }
