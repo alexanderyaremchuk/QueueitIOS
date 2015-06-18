@@ -67,6 +67,7 @@ static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
     return [self submitRequestWithURL:url
                                method:@"PUT"
                                  body:bodyDict
+                       expectedStatus:200
                               success:success
                               failure:failure];
 }
@@ -76,6 +77,7 @@ static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
 - (NSString *)submitRequestWithURL:(NSURL *)URL
                             method:(NSString *)httpMethod
                               body:(NSDictionary *)bodyDict
+                    expectedStatus:(NSInteger)expectedStatus
                            success:(QueueServiceSuccess)success
                            failure:(QueueServiceFailure)failure
 {

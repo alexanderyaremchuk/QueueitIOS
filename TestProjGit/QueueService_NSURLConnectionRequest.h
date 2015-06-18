@@ -8,6 +8,7 @@
 - (NSString *)uniqueIdentifier;
 
 - (instancetype)initWithRequest:(NSURLRequest *)request
+             expectedStatusCode:(NSInteger)statusCode
                         success:(QueueServiceSuccess)success
                         failure:(QueueServiceFailure)failure
                        delegate:(id<QueueService_NSURLConnectionRequestDelegate>)delegate;

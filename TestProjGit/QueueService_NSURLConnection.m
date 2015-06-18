@@ -10,6 +10,7 @@
 - (NSString *)submitRequestWithURL:(NSURL *)URL
                             method:(NSString *)httpMethod
                               body:(NSDictionary *)bodyDict
+                    expectedStatus:(NSInteger)expectedStatus
                            success:(QueueServiceSuccess)success
                            failure:(QueueServiceFailure)failure
 {
@@ -26,9 +27,10 @@
     
     QueueService_NSURLConnectionRequest *connectionRequest;
     connectionRequest = [[QueueService_NSURLConnectionRequest alloc] initWithRequest:request
-                                                                                   success:success
-                                                                                   failure:failure
-                                                                                  delegate:self];
+                                                                  expectedStatusCode:expectedStatus
+                                                                             success:success
+                                                                             failure:failure
+                                                                            delegate:self];
     
     NSString *connectionID = [connectionRequest uniqueIdentifier];
 

@@ -11,18 +11,22 @@
 @property (nonatomic, copy) QueueServiceFailure failureCallback;
 @property (nonatomic, weak) id<QueueService_NSURLConnectionRequestDelegate> delegate;
 @property (nonatomic, strong) NSString *uniqueIdentifier;
+@property (nonatomic, assign) NSInteger expectedStatusCode;
+@property (nonatomic, assign) NSInteger actualStatusCode;
 
 @end
 
 @implementation QueueService_NSURLConnectionRequest
 
 - (instancetype)initWithRequest:(NSURLRequest *)request
+             expectedStatusCode:(NSInteger)statusCode
                         success:(QueueServiceSuccess)success
                         failure:(QueueServiceFailure)failure
                        delegate:(id<QueueService_NSURLConnectionRequestDelegate>)delegate
 {
     if ((self = [super init])) {
         self.request = request;
+        self.expectedStatusCode = statusCode;
         self.successCallback = success;
         self.failureCallback = failure;
         self.uniqueIdentifier = [[NSUUID UUID] UUIDString];
@@ -38,6 +42,7 @@
 {
     self.response = nil;
     self.data = [NSMutableData data];
+    self.actualStatusCode = NSNotFound;
     self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self];
 }
 
@@ -61,6 +66,7 @@
 {
     self.response = response;
     NSInteger responseCode = [(NSHTTPURLResponse *)response statusCode];
+    self.actualStatusCode = responseCode;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -72,24 +78,37 @@
 {
     NSURLRequest *request = [connection originalRequest];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.successCallback(self.data);
-    });
-    
-    if (self.data) {
-        NSError *jsonError = nil;
-        id json = [NSJSONSerialization JSONObjectWithData:self.data options:0 error:&jsonError];
-        if (json && [json isKindOfClass:[NSDictionary class]]) {
-            NSString *errorMessage = [(NSDictionary *)json valueForKey:@"error"];
-            if (errorMessage) {
-                
+    if ([self hasExpectedStatusCode]) {
+        NSLog(@"%@ %@ %li SUCCESS", [request HTTPMethod], [request URL], (long)self.expectedStatusCode);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.successCallback(self.data);
+        });
+    }
+    else {
+        NSLog(@"%@ %@ %li INVALID STATUS CODE", [request HTTPMethod], [request URL], (long)self.actualStatusCode);
+        
+        NSString *message = [NSString stringWithFormat:@"Unexpected response code: %li", (long)self.actualStatusCode];
+        
+        if (self.data) {
+            NSError *jsonError = nil;
+            id json = [NSJSONSerialization JSONObjectWithData:self.data options:0 error:&jsonError];
+            if (json && [json isKindOfClass:[NSDictionary class]]) {
+                NSString *errorMessage = [(NSDictionary *)json valueForKey:@"error"];
+                if (errorMessage) {
+                    message = errorMessage;
+                }
             }
         }
+        
+        NSError *error = [NSError errorWithDomain:@"QueueService"
+                                             code:self.actualStatusCode
+                                         userInfo:@{ NSLocalizedDescriptionKey: message }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.failureCallback(error);
+        });
     }
-    
-    //dispatch_async(dispatch_get_main_queue(), ^{
-        //self.failureCallback(error);
-    //});
     
     [self.delegate requestDidComplete:self];
 }
@@ -99,6 +118,15 @@
 - (void)appendData:(NSData *)data
 {
     [self.data appendData:data];
+}
+
+- (BOOL)hasExpectedStatusCode
+{
+    if (self.actualStatusCode != NSNotFound) {
+        return self.expectedStatusCode == self.actualStatusCode;
+    }
+    
+    return NO;
 }
 
 
