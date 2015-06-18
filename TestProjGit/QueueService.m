@@ -43,7 +43,11 @@ static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
                            NSDictionary *userDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                            if (userDict && [userDict isKindOfClass:[NSDictionary class]])
                            {
-                           
+                               QueueStatus* queueStatus = [[QueueStatus alloc] initWithDictionary:userDict];
+                               
+                               if (success != NULL) {
+                                   success(queueStatus);
+                               }
                            }
                            else
                            {
