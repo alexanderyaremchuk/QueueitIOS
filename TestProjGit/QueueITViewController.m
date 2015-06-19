@@ -54,11 +54,13 @@ static int loadCount = 0;
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    loadCount++;
+    if (![self.webView isLoading])
+    {
+        loadCount++;
+        [self runAsync];
+    }
     
     //if loadCount > 1 -> consider what to do here instead of running [self runAsync]
-
-    //[self runAsync];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
