@@ -22,12 +22,14 @@ static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
      eventOrAliasId:(NSString *)eventorAliasId
              userId:(NSString *)userId
           userAgent:(NSString *)userAgent
+            appType:(NSString*)appType
             success:(void (^)(QueueStatus *))success
             failure:(QueueServiceFailure)failure
 {
     NSDictionary* bodyDict = @{
                                @"userId": userId,
-                               @"userAgent": userAgent
+                               @"userAgent": userAgent,
+                               @"appType":appType
                              };
     
     NSString* urlAsString = API_ROOT;

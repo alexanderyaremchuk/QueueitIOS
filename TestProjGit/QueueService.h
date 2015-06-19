@@ -11,6 +11,7 @@ typedef void (^QueueServiceFailure)(NSError *error);
      eventOrAliasId:(NSString*)eventorAliasId
              userId:(NSString*)userId
           userAgent:(NSString*)userAgent
+            appType:(NSString*)appType
             success:(void(^)(QueueStatus* queueStatus))success
             failure:(QueueServiceFailure)failure;
 
