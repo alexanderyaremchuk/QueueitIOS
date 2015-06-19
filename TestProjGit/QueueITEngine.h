@@ -5,7 +5,9 @@
 
 @interface QueueITEngine : NSObject
 @property (nonatomic)id<QueuePassedDelegate> queuePassedDelegate;
--(instancetype)initWithHost:(UIViewController *)host;
+-(instancetype)initWithHost:(UIViewController *)host
+                 customerId:(NSString*)customerId
+             eventOrAliasId:(NSString*)eventOrAliasId;
 @end
 
 @protocol QueuePassedDelegate <NSObject>

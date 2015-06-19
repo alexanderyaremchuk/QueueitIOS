@@ -1,8 +1,6 @@
 #import "ShellViewController.h"
 #import "QueueITViewController.h"
 #import "QueueITEngine.h"
-#import "QueueService.h"
-#import "QueueStatus.h"
 
 @interface ShellViewController ()
 @end
@@ -17,21 +15,11 @@
     nameLabel.text = @"Host app's page";
     [self.view addSubview:nameLabel];
     
-    __weak typeof(self) weakSelf = self;
     
-    [[QueueService sharedInstance] enqueue:@"frwitest"
-                            eventOrAliasId:@"queue0515"
-                                    userId:@"A" userAgent:@"B"
-                                   success:^(QueueStatus *queueStatus)
-                                   {
-                                   }
-
-                                   failure:^(NSError *error)
-                                   {
-                                   }];
+    QueueITEngine* engine = [[QueueITEngine alloc]initWithHost:self
+                                                    customerId:@"frwitest"
+                                                eventOrAliasId:@"queue0515"];
     
-    //QueueITEngine* engine = [[QueueITEngine alloc]initWithHost:self];
-
 }
 
 @end
