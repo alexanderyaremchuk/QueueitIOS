@@ -13,6 +13,8 @@
 
 @implementation QueueITViewController
 
+static int loadCount = 0;
+
 -(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine
                    queueUrl:(NSString*)queueUrl
 {
@@ -47,10 +49,16 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    loadCount++;
+    
+    //if loadCount > 1 -> consider what to do here instead of running [self runAsync]
 
     [self runAsync];
 }
@@ -79,7 +87,7 @@
 
 -(BOOL)isDone{
         NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"foo();"];
-        if ([result  isEqual: @"725"]) {
+    if ([result  isEqual: @"725"] || loadCount > 1) {
             return YES;
         }
     return NO;

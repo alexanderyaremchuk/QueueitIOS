@@ -22,22 +22,30 @@
                 NSString* userId = [IOSUtils getUserId];
                 NSString* userAgent = [IOSUtils getUserAgent];
                 
-                [[QueueService sharedInstance] enqueue:customerId
-                                        eventOrAliasId:eventOrAliasId
-                                                userId:userId
-                                             userAgent:userAgent
-                                               success:^(QueueStatus *queueStatus)
-                                               {
-                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                       QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
-                                                                                                                        queueEngine:self
-                                                                                                                           queueUrl:queueStatus.queueUrlString];
-                                                       [host presentModalViewController:queueVC animated:YES];
-                                                   });
-                                               }
-                                               failure:^(NSError *error)
-                                               {
-                                               }];
+                
+                QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
+                                                                                 queueEngine:self
+                                                                                    queueUrl:@"hello"];
+                [host presentModalViewController:queueVC animated:YES];
+                
+                
+                
+//                [[QueueService sharedInstance] enqueue:customerId
+//                                        eventOrAliasId:eventOrAliasId
+//                                                userId:userId
+//                                             userAgent:userAgent
+//                                               success:^(QueueStatus *queueStatus)
+//                                               {
+//                                                   dispatch_async(dispatch_get_main_queue(), ^{
+//                                                       QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
+//                                                                                                                        queueEngine:self
+//                                                                                                                           queueUrl:queueStatus.queueUrlString];
+//                                                       [host presentModalViewController:queueVC animated:YES];
+//                                                   });
+//                                               }
+//                                               failure:^(NSError *error)
+//                                               {
+//                                               }];
             });
         });
     }
