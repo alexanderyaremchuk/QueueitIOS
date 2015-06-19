@@ -4,7 +4,8 @@
 
 @interface QueueITViewController : UIViewController
 
--(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine;
+-(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine
+                   queueUrl:(NSString*)queueUrl;
 
 @end
 

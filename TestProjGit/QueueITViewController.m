@@ -7,16 +7,20 @@
 @property (nonatomic) UIWebView* webView;
 @property (nonatomic, strong) UIViewController* host;
 @property (nonatomic, strong) QueueITEngine* engine;
+@property (nonatomic, strong)NSString* queueUrl;
 
 @end
 
 @implementation QueueITViewController
 
--(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine {
+-(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine
+                   queueUrl:(NSString*)queueUrl
+{
     self = [super init];
     if(self) {
         self.host = host;
         self.engine = engine;
+        self.queueUrl = queueUrl;
     }
     return self;
 }
@@ -29,9 +33,8 @@
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     [self.view addSubview:self.webView];
     
-    NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
-    NSURL *url = [NSURL fileURLWithPath:urlAddress];
-    NSURLRequest* request = [NSURLRequest requestWithURL:url];
+    NSURL *urlAddress = [NSURL URLWithString:self.queueUrl];
+    NSURLRequest *request = [NSURLRequest requestWithURL:urlAddress];
     [self.webView loadRequest:request];
     self.webView.delegate = self;
 }

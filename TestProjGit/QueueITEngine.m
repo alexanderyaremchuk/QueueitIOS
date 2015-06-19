@@ -29,7 +29,9 @@
                                                success:^(QueueStatus *queueStatus)
                                                {
                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                       QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host queueEngine:self];
+                                                       QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
+                                                                                                                        queueEngine:self
+                                                                                                                           queueUrl:queueStatus.queueUrlString];
                                                        [host presentModalViewController:queueVC animated:YES];
                                                    });
                                                }
