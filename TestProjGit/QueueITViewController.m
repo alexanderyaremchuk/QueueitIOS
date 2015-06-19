@@ -33,8 +33,12 @@
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     [self.view addSubview:self.webView];
     
-    NSURL *urlAddress = [NSURL URLWithString:self.queueUrl];
-    NSURLRequest *request = [NSURLRequest requestWithURL:urlAddress];
+    NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+    NSURL *url = [NSURL fileURLWithPath:urlAddress];
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];
+    
+    //NSURL *urlAddress = [NSURL URLWithString:self.queueUrl];
+    //NSURLRequest *request = [NSURLRequest requestWithURL:urlAddress];
     [self.webView loadRequest:request];
     self.webView.delegate = self;
 }
@@ -54,22 +58,31 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 }
 
-- (void)runAsync {
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [NSThread sleepForTimeInterval:10.0f];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"foo();"];
-            if ([result  isEqual: @"725"]) {
-                CustomerLogic* customer = [[CustomerLogic alloc]init];
-                self.engine.queuePassedDelegate = customer;
-                
-                Turn* turnToken = [[Turn alloc]initWithQueueNumber:result];
-                [self.engine.queuePassedDelegate notifyYourTurn:turnToken];
-                
-                [self.host dismissModalViewControllerAnimated:YES];
-            }
+- (void)runAsync
+{
+    if ([self isDone])
+    {
+        Turn* turnToken = [[Turn alloc]initWithQueueNumber:@"725"];
+        [self.engine.queuePassedDelegate notifyYourTurn:turnToken];
+        [self.host dismissModalViewControllerAnimated:YES];
+    }
+    else
+    {
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [NSThread sleepForTimeInterval:1.0f];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self runAsync];
+            });
         });
-    });
+    }
+}
+
+-(BOOL)isDone{
+        NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"foo();"];
+        if ([result  isEqual: @"725"]) {
+            return YES;
+        }
+    return NO;
 }
 
 @end
