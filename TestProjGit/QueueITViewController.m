@@ -35,12 +35,12 @@ static int loadCount = 0;
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     [self.view addSubview:self.webView];
     
-    NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
-    NSURL *url = [NSURL fileURLWithPath:urlAddress];
-    NSURLRequest* request = [NSURLRequest requestWithURL:url];
+    //NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+    //NSURL *url = [NSURL fileURLWithPath:urlAddress];
+    //NSURLRequest* request = [NSURLRequest requestWithURL:url];
     
-    //NSURL *urlAddress = [NSURL URLWithString:self.queueUrl];
-    //NSURLRequest *request = [NSURLRequest requestWithURL:urlAddress];
+    NSURL *urlAddress = [NSURL URLWithString:self.queueUrl];
+    NSURLRequest *request = [NSURLRequest requestWithURL:urlAddress];
     [self.webView loadRequest:request];
     self.webView.delegate = self;
 }
@@ -49,8 +49,6 @@ static int loadCount = 0;
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -60,7 +58,7 @@ static int loadCount = 0;
     
     //if loadCount > 1 -> consider what to do here instead of running [self runAsync]
 
-    [self runAsync];
+    //[self runAsync];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
