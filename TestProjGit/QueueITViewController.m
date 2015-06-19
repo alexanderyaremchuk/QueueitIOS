@@ -86,11 +86,19 @@ static int loadCount = 0;
 }
 
 -(BOOL)isDone{
-        NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"foo();"];
-    if ([result  isEqual: @"725"] || loadCount > 1) {
-            return YES;
-        }
+    NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"GetQueueStatus();"];
+    if ([result  isEqual: @"true"]) {
+        return YES;
+    }
     return NO;
 }
+
+//-(BOOL)isDone{
+//    NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"GetQueueStatus();"];
+//    if ([result  isEqual: @"true"] || loadCount > 1) {
+//            return YES;
+//        }
+//    return NO;
+//}
 
 @end
