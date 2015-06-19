@@ -3,6 +3,7 @@
 #import "QueueITViewController.h"
 #import "QueueService.h"
 #import "QueueStatus.h"
+#import "IOSUtils.h"
 
 @implementation QueueITEngine
 
@@ -18,8 +19,8 @@
                 
                 //__weak typeof(self) weakSelf = self;
                 
-                NSString* userId = [self getUserId];
-                NSString* userAgent = [self getUserAgent];
+                NSString* userId = [IOSUtils getUserId];
+                NSString* userAgent = [IOSUtils getUserAgent];
                 
                 [[QueueService sharedInstance] enqueue:customerId
                                         eventOrAliasId:eventOrAliasId
@@ -41,17 +42,6 @@
     return self;
 }
 
--(NSString*)getUserId{
-    UIDevice* device = [[UIDevice alloc]init];
-    NSUUID* deviceid = [device identifierForVendor];
-    NSString* uuid = [deviceid UUIDString];
-    return uuid;
-}
 
--(NSString*)getUserAgent{
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-    NSString* secretAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    return secretAgent;
-}
 
 @end
