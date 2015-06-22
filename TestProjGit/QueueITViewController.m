@@ -8,6 +8,7 @@
 @property (nonatomic, strong) UIViewController* host;
 @property (nonatomic, strong) QueueITEngine* engine;
 @property (nonatomic, strong)NSString* queueUrl;
+@property (nonatomic, strong)UIActivityIndicatorView* spinner;
 
 @end
 
@@ -32,12 +33,13 @@ static int loadCount = 0;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    self.spinner = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [self.spinner setColor:[UIColor grayColor]];
+    [self.spinner startAnimating];
+    
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     [self.view addSubview:self.webView];
-    
-    //NSString* urlAddress = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
-    //NSURL *url = [NSURL fileURLWithPath:urlAddress];
-    //NSURLRequest* request = [NSURLRequest requestWithURL:url];
+    [self.webView addSubview:self.spinner];
     
     NSURL *urlAddress = [NSURL URLWithString:self.queueUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:urlAddress];
@@ -54,6 +56,7 @@ static int loadCount = 0;
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
+    [self.spinner stopAnimating];
     if (![self.webView isLoading])
     {
         loadCount++;

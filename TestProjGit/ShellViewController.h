@@ -2,5 +2,5 @@
 #import "QueueITViewController.h"
 
 
-@interface ShellViewController : UIViewController
+@interface ShellViewController : UIViewController<QueuePassedDelegate>
 @end

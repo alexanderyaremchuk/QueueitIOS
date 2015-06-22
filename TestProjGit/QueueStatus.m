@@ -9,7 +9,7 @@ NSString * const KEY_ERROR_MESSAGE = @"ErrorMessage";
 
 -(instancetype)init:(NSString *)queueId
            queueUrl:(NSString *)queueUrlString
-    requeryInterval:(NSString*)requeryInterval
+    requeryInterval:(int)requeryInterval
        errorMessage:(NSString*)errorMessage
 {
     if(self = [super init]) {
@@ -24,9 +24,15 @@ NSString * const KEY_ERROR_MESSAGE = @"ErrorMessage";
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
+    int requeryInterval = 0;
+    if(![dictionary[KEY_REQUERY_INTERVAl] isEqual:[NSNull null]])
+    {
+        requeryInterval = [dictionary[KEY_REQUERY_INTERVAl] intValue];
+    }
+    
     return [self init:dictionary[KEY_QUEUE_ID]
              queueUrl:dictionary[KEY_QUEUE_URL]
-      requeryInterval:dictionary[KEY_REQUERY_INTERVAl]
+      requeryInterval:requeryInterval
          errorMessage:dictionary[KEY_ERROR_MESSAGE]];
 }
 
