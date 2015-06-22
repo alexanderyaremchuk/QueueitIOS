@@ -16,6 +16,9 @@
     if(self) {
         self.queuePassedDelegate = self;
         
+        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"QUEUE_URL"];
+
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString* queueUrlCached = [defaults stringForKey:@"QUEUE_URL"];
         
@@ -52,27 +55,34 @@
          userId:userId userAgent:userAgent
         appType:appType
         success:^(QueueStatus *queueStatus)
-     {
-         NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
-         
-         if (queueStatus.requeryInterval > 0)
-         {
-             dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                 [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
+        {
+             NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
+             
+             if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0) //SafetyNet case -> do nothing
+             {
+             }
+             else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //InQueue case -> show queue page
+             {
+                 [self showQueue:host queueUrl:queueStatus.queueUrlString];
+                 [self updateCache:queueStatus.queueUrlString];
+             }
+             else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //Idle case -> show queue page
+             {
+                 [self showQueue:host queueUrl:queueStatus.queueUrlString];
+             }
+             else if (queueStatus.requeryInterval > 0) //DisableEvent case -> continue polling at requeryInterval
+             {
+                 dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                     [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
+                     });
                  });
-             });
-         }
-         else
-         {
-             [self showQueue:host queueUrl:queueStatus.queueUrlString];
-             [self updateCache:queueStatus.queueUrlString];
-         }
-     }
+             }
+        }
         failure:^(NSError *error)
-     {
-     }];
+        {
+        }];
 }
 
 -(void)updateCache:(NSString*)queueUrl{
