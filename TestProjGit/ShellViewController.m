@@ -22,7 +22,7 @@
     
     QueueITEngine* engine = [[QueueITEngine alloc]initWithHost:self
                                                     customerId:@"frwitest"
-                                                eventOrAliasId:safetyNetId];
+                                                eventOrAliasId:queueEventId];
     //engine.queuePassedDelegate = self;
     
 }
