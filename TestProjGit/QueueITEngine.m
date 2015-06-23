@@ -6,6 +6,9 @@
 #import "IOSUtils.h"
 
 @interface QueueITEngine()<QueuePassedDelegate>
+@property (nonatomic, strong)UIViewController* host;
+@property (nonatomic, strong)NSString* customerId;
+@property (nonatomic, strong)NSString* eventId;
 @end
 
 @implementation QueueITEngine
@@ -15,26 +18,32 @@
     self = [super init];
     if(self) {
         self.queuePassedDelegate = self;
-        
-        NSString * key = [NSString stringWithFormat:@"%@-%@",customerId, eventOrAliasId];
-        
-        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString* queueUrlCached = [defaults stringForKey:key];
-        
-        if (queueUrlCached)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self showQueue:host queueUrl:queueUrlCached customerId:customerId eventId:eventOrAliasId];
-            });
-        }
-        else
-        {
-            [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
-        }
+        self.host = host;
+        self.customerId = customerId;
+        self.eventId = eventOrAliasId;
     }
     return self;
+}
+
+-(void)run
+{
+    NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
+    
+    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString* queueUrlCached = [defaults stringForKey:key];
+    
+    if (queueUrlCached)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
+        });
+    }
+    else
+    {
+        [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId];
+    }
 }
 
 -(void)showQueue:(UIViewController*)host queueUrl:(NSString*)queueUrl customerId:(NSString*)customerId eventId:(NSString*)eventId

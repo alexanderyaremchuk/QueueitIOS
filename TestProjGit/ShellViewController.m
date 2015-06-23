@@ -24,7 +24,7 @@
                                                     customerId:@"frwitest"
                                                 eventOrAliasId:queueEventId];
     //engine.queuePassedDelegate = self;
-    
+    [engine run];
 }
 
 -(void) notifyYourTurn:(Turn *)turn
