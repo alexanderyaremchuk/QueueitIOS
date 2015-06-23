@@ -9,6 +9,8 @@
 @property (nonatomic, strong) QueueITEngine* engine;
 @property (nonatomic, strong)NSString* queueUrl;
 @property (nonatomic, strong)UIActivityIndicatorView* spinner;
+@property (nonatomic, strong)NSString* customerId;
+@property (nonatomic, strong)NSString* eventId;
 
 @end
 
@@ -16,14 +18,19 @@
 
 static int loadCount = 0;
 
--(instancetype)initWithHost:(UIViewController *)host queueEngine:(QueueITEngine*) engine
+-(instancetype)initWithHost:(UIViewController *)host
+                queueEngine:(QueueITEngine*) engine
                    queueUrl:(NSString*)queueUrl
+                 customerId:(NSString*)customerId
+                    eventId:(NSString*)eventId
 {
     self = [super init];
     if(self) {
         self.host = host;
         self.engine = engine;
         self.queueUrl = queueUrl;
+        self.customerId = customerId;
+        self.eventId = eventId;
     }
     return self;
 }
@@ -73,7 +80,8 @@ static int loadCount = 0;
 {
     if ([self isDone])
     {
-        Turn* turnToken = [[Turn alloc]initWithQueueNumber:@"725"];
+        //TODO: get queueId from js and pass below
+        Turn* turnToken = [[Turn alloc]initWithQueueNumber:@"SHOULD BE RETURNED FROM JS CALL" customerId:self.customerId eventId:self.eventId];
         [self.engine.queuePassedDelegate notifyYourTurn:turnToken];
         [self.host dismissModalViewControllerAnimated:YES];
     }

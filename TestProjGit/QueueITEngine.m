@@ -16,16 +16,17 @@
     if(self) {
         self.queuePassedDelegate = self;
         
-        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"QUEUE_URL"];
-
+        NSString * key = [NSString stringWithFormat:@"%@-%@",customerId, eventOrAliasId];
+        
+        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString* queueUrlCached = [defaults stringForKey:@"QUEUE_URL"];
+        NSString* queueUrlCached = [defaults stringForKey:key];
         
         if (queueUrlCached)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self showQueue:host queueUrl:queueUrlCached];
+                [self showQueue:host queueUrl:queueUrlCached customerId:customerId eventId:eventOrAliasId];
             });
         }
         else
@@ -36,10 +37,12 @@
     return self;
 }
 
--(void)showQueue:(UIViewController*)host queueUrl:(NSString*)queueUrl{
+-(void)showQueue:(UIViewController*)host queueUrl:(NSString*)queueUrl customerId:(NSString*)customerId eventId:(NSString*)eventId
+{
     QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
                                                                      queueEngine:self
-                                                                        queueUrl:queueUrl];
+                                                                        queueUrl:queueUrl
+                                                                      customerId:customerId eventId:eventId];
     [host presentModalViewController:queueVC animated:YES];
 }
 
@@ -63,12 +66,12 @@
              }
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //InQueue case -> show queue page
              {
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString];
-                 [self updateCache:queueStatus.queueUrlString];
+                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
              }
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //Idle case -> show queue page
              {
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString];
+                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
              }
              else if (queueStatus.requeryInterval > 0) //DisableEvent case -> continue polling at requeryInterval
              {
@@ -85,15 +88,17 @@
         }];
 }
 
--(void)updateCache:(NSString*)queueUrl{
+-(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL customerId:(NSString*)customerId eventId:(NSString*)eventId{
+    NSString * key = [NSString stringWithFormat:@"%@-%@",customerId, eventId];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:queueUrl forKey:@"QUEUE_URL"];
+    [defaults setValue:queueUrl forKey:key];
     [defaults synchronize];
 }
 
 -(void) notifyYourTurn:(Turn *)turn
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"QUEUE_URL"];
+    NSString * key = [NSString stringWithFormat:@"%@-%@", turn.customerId, turn.eventId];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
     
     NSString* message = @"You are through the queue now.";
     NSLog(@"%@", message);
