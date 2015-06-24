@@ -71,15 +71,16 @@
              {
                  if ([queueStatus.errorType isEqualToString:@"Configuration"])//ISSUE: when incorrect eventId is provided -> Runtime error type is returned instead of Config.
                  {
-                     NSException *e = [NSException exceptionWithName:@"ConfigurationException" reason:queueStatus.errorMessage userInfo:nil];
-                     @throw e;
+                     @throw [NSException exceptionWithName:@"QueueITConfigurationException" reason:queueStatus.errorMessage userInfo:nil];
                  }
-                 if ([queueStatus.errorType isEqualToString:@"Runtime"])//ISSUE: when incorrect eventId is provided -> Runtime error type is returned instead of Config.
+                 else if ([queueStatus.errorType isEqualToString:@"Runtime"])
                  {
-                     NSException *e = [NSException exceptionWithName:@"RuntimeException" reason:queueStatus.errorMessage userInfo:nil];
-                     @throw e;
+                     @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:queueStatus.errorMessage userInfo:nil];
                  }
-                 //TODO: add 1 more else ifs for 1 more errorTypes and throw custom exceptions
+                 else if ([queueStatus.errorType isEqualToString:@"Validation"])
+                 {
+                     @throw [NSException exceptionWithName:@"QueueITValidationException" reason:queueStatus.errorMessage userInfo:nil];
+                 }
              }
              
              NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
