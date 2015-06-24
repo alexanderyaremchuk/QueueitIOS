@@ -1,6 +1,4 @@
 #import "ShellViewController.h"
-#import "QueueITViewController.h"
-#import "QueueITEngine.h"
 
 @interface ShellViewController ()
 @property(nonatomic, strong)QueueITEngine* engine;
