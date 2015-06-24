@@ -77,12 +77,10 @@ static int loadCount = 0;
 
 - (void)runAsync
 {
-    if ([self isDone])
+    NSString* queueId = [self getQueueId];
+    if (queueId)
     {
-        //TODO: get queueId from js and pass below
-        NSString* queueId = @"QUEUEID FROM JS";
         [self.engine raiseQueuePassed:queueId];
-        
         [self.host dismissModalViewControllerAnimated:YES];
     }
     else
@@ -96,20 +94,13 @@ static int loadCount = 0;
     }
 }
 
--(BOOL)isDone{
-    NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"GetQueueStatus();"];
-    if ([result  isEqual: @"true"]) {
-        return YES;
+-(NSString*)getQueueId
+{
+    NSString* queueId = [self.webView stringByEvaluatingJavaScriptFromString:@"GetQueueIdWhenRedirectedToTarget();"];
+    if ([queueId length] > 0) {
+        return queueId;
     }
-    return NO;
+    return nil;
 }
-
-//-(BOOL)isDone{
-//    NSString* result = [self.webView stringByEvaluatingJavaScriptFromString:@"GetQueueStatus();"];
-//    if ([result  isEqual: @"true"] || loadCount > 1) {
-//            return YES;
-//        }
-//    return NO;
-//}
 
 @end

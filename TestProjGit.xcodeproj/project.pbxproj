@@ -28,6 +28,10 @@
 		1DCD49FF1B3AA84000C17F94 /* 1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD49FC1B3AA84000C17F94 /* 1.jpeg */; };
 		1DCD4A001B3AA84000C17F94 /* 2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD49FD1B3AA84000C17F94 /* 2.jpeg */; };
 		1DCD4A011B3AA84000C17F94 /* 3.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD49FE1B3AA84000C17F94 /* 3.jpeg */; };
+		1DCD4A031B3AAE0200C17F94 /* b.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD4A021B3AAE0200C17F94 /* b.jpeg */; };
+		1DCD4A051B3AAE0B00C17F94 /* d.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD4A041B3AAE0B00C17F94 /* d.jpeg */; };
+		1DCD4A071B3AAEAC00C17F94 /* c.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD4A061B3AAEAC00C17F94 /* c.jpeg */; };
+		1DCD4A0A1B3AAF6500C17F94 /* JewelryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD4A091B3AAF6500C17F94 /* JewelryTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,11 @@
 		1DCD49FC1B3AA84000C17F94 /* 1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpeg; sourceTree = "<group>"; };
 		1DCD49FD1B3AA84000C17F94 /* 2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpeg; sourceTree = "<group>"; };
 		1DCD49FE1B3AA84000C17F94 /* 3.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpeg; sourceTree = "<group>"; };
+		1DCD4A021B3AAE0200C17F94 /* b.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = b.jpeg; sourceTree = "<group>"; };
+		1DCD4A041B3AAE0B00C17F94 /* d.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = d.jpeg; sourceTree = "<group>"; };
+		1DCD4A061B3AAEAC00C17F94 /* c.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c.jpeg; sourceTree = "<group>"; };
+		1DCD4A081B3AAF6500C17F94 /* JewelryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JewelryTableViewController.h; sourceTree = "<group>"; };
+		1DCD4A091B3AAF6500C17F94 /* JewelryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JewelryTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +187,8 @@
 				1DCD49011B2AD29600C17F94 /* ShellViewController.m */,
 				1DCD49F61B3AA35C00C17F94 /* TopsTableViewController.h */,
 				1DCD49F71B3AA35C00C17F94 /* TopsTableViewController.m */,
+				1DCD4A081B3AAF6500C17F94 /* JewelryTableViewController.h */,
+				1DCD4A091B3AAF6500C17F94 /* JewelryTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -211,6 +222,9 @@
 		1DCD49F91B3AA75B00C17F94 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1DCD4A061B3AAEAC00C17F94 /* c.jpeg */,
+				1DCD4A041B3AAE0B00C17F94 /* d.jpeg */,
+				1DCD4A021B3AAE0200C17F94 /* b.jpeg */,
 				1DCD49FC1B3AA84000C17F94 /* 1.jpeg */,
 				1DCD49FD1B3AA84000C17F94 /* 2.jpeg */,
 				1DCD49FE1B3AA84000C17F94 /* 3.jpeg */,
@@ -300,9 +314,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DCD4A051B3AAE0B00C17F94 /* d.jpeg in Resources */,
 				1DCD49FB1B3AA81E00C17F94 /* 4.jpeg in Resources */,
 				1DCD49FF1B3AA84000C17F94 /* 1.jpeg in Resources */,
+				1DCD4A031B3AAE0200C17F94 /* b.jpeg in Resources */,
 				1DCD48941B299B6400C17F94 /* Main.storyboard in Resources */,
+				1DCD4A071B3AAEAC00C17F94 /* c.jpeg in Resources */,
 				1DCD48F41B29C44900C17F94 /* index.html in Resources */,
 				1DCD48991B299B6400C17F94 /* LaunchScreen.xib in Resources */,
 				1DCD4A011B3AA84000C17F94 /* 3.jpeg in Resources */,
@@ -336,6 +353,7 @@
 				1DCD49F21B32D6A600C17F94 /* QueueService_NSURLConnectionRequest.m in Sources */,
 				1DCD49F51B3403D900C17F94 /* IOSUtils.m in Sources */,
 				1DCD49EF1B32B9A400C17F94 /* QueueService_NSURLConnection.m in Sources */,
+				1DCD4A0A1B3AAF6500C17F94 /* JewelryTableViewController.m in Sources */,
 				1DCD49E91B32B12400C17F94 /* QueueService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

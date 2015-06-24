@@ -1,19 +1,19 @@
-#import "TopsTableViewController.h"
+#import "JewelryTableViewController.h"
 
-@interface TopsTableViewController ()
+@interface JewelryTableViewController ()
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) NSMutableArray *images;
 @property(nonatomic, strong)QueueITEngine* engine;
 @end
 
-@implementation TopsTableViewController
+@implementation JewelryTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *data = @[@"Amelia Tunic", @"Sarasota", @"Arya Tank Top", @"Minka Trapese"];
-    NSArray *imagesData = @[@"1.jpeg", @"2.jpeg", @"3.jpeg", @"4.jpeg"];
-
+    NSArray *data = @[@"Juice Bangle", @"Starfish Cuff", @"Basket surprise"];
+    NSArray *imagesData = @[@"b.jpeg", @"c.jpeg", @"d.jpeg"];
+    
     self.items = [[NSMutableArray alloc]init];
     self.images = [[NSMutableArray alloc]init];
     
@@ -29,7 +29,6 @@
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:@"frwitest" eventOrAliasId:queueEventId];
     self.engine.queuePassedDelegate = self;
     [self.engine run];
-
 }
 
 #pragma mark - Table view data source
@@ -41,10 +40,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
-    
-    
     cell.imageView.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-    
     return cell;
 }
 

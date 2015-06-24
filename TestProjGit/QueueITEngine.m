@@ -28,7 +28,7 @@
 {
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     
-    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString* queueUrlCached = [defaults stringForKey:key];

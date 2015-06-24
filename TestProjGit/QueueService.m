@@ -2,11 +2,9 @@
 #import "QueueService_NSURLConnection.h"
 
 static QueueService *SharedInstance;
-
-static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
+static NSString * const API_ROOT = @"http://queue0515-frwitest.test-q.queue-it.net/api/queue";
 
 @implementation QueueService
-
 
 + (QueueService *)sharedInstance
 {
@@ -60,7 +58,7 @@ static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
                        }
                        failure:^(NSError *error)
                        {
-                           
+                           failure(error);
                        }];
 }
 
