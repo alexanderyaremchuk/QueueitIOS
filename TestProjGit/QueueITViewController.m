@@ -1,5 +1,4 @@
 #import "QueueITViewController.h"
-#import "CustomerLogic.h"
 #import "QueueITEngine.h"
 
 @interface QueueITViewController ()<UIWebViewDelegate>
@@ -81,8 +80,9 @@ static int loadCount = 0;
     if ([self isDone])
     {
         //TODO: get queueId from js and pass below
-        Turn* turnToken = [[Turn alloc]initWithQueueNumber:@"SHOULD BE RETURNED FROM JS CALL" customerId:self.customerId eventId:self.eventId];
-        [self.engine.queuePassedDelegate notifyYourTurn:turnToken];
+        NSString* queueId = @"QUEUEID FROM JS";
+        [self.engine raiseQueuePassed:queueId];
+        
         [self.host dismissModalViewControllerAnimated:YES];
     }
     else

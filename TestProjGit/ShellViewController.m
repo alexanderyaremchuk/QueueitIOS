@@ -3,6 +3,7 @@
 #import "QueueITEngine.h"
 
 @interface ShellViewController ()
+@property(nonatomic, strong)QueueITEngine* engine;
 @end
 
 @implementation ShellViewController
@@ -15,23 +16,23 @@
     nameLabel.text = @"Host app's page";
     [self.view addSubview:nameLabel];
     
-    NSString* safetyNetId = @"safetynet0515"; //ISSUE: returns requeryInterval is null, queueUrl is null, only queueId has value;
+    NSString* safetyNetId = @"safetynet0515";
     NSString* queueEventId = @"queue0515";
-    NSString* idleEventId = @"idle4life"; //ISSUE: idle page loads and stays indefinetely, what to do with it?
-    NSString* disabledEventId = @"disabled062015"; //ISSUE: has requeryInterval set, but never delivers any queryUrl after continuous requests
+    NSString* idleEventId = @"idle4life";
+    NSString* disabledEventId = @"disabled062015";
     
-    QueueITEngine* engine = [[QueueITEngine alloc]initWithHost:self
-                                                    customerId:@"frwitest"
-                                                eventOrAliasId:queueEventId];
-    //engine.queuePassedDelegate = self;
-    [engine run];
+    self.engine = [[QueueITEngine alloc]initWithHost:self
+                                          customerId:@"frwitest"
+                                      eventOrAliasId:queueEventId];
+    self.engine.queuePassedDelegate = self;
+    [self.engine run];
 }
 
 -(void) notifyYourTurn:(Turn *)turn
 {
-    NSLog(@"Your queue number is: %@", turn.queueNumber);
+    NSLog(@"Your queue number is: %@", turn.queueId);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn"
-                                                    message: [NSString stringWithFormat: @"You are through the queue. Your queue number is: %@", turn.queueNumber]
+                                                    message: [NSString stringWithFormat: @"You are through the queue. Your queue number is: %@", turn.queueId]
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];

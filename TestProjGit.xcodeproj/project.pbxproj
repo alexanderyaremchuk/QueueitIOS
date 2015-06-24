@@ -16,7 +16,6 @@
 		1DCD48F41B29C44900C17F94 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD48F31B29C44900C17F94 /* index.html */; };
 		1DCD48F81B29C48500C17F94 /* QueueITViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48F71B29C48500C17F94 /* QueueITViewController.m */; };
 		1DCD48FC1B29C50200C17F94 /* Turn.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48FB1B29C50200C17F94 /* Turn.m */; };
-		1DCD48FF1B29C50D00C17F94 /* CustomerLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD48FE1B29C50D00C17F94 /* CustomerLogic.m */; };
 		1DCD49021B2AD29600C17F94 /* ShellViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD49011B2AD29600C17F94 /* ShellViewController.m */; };
 		1DCD49051B2B005400C17F94 /* QueueITEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD49041B2B005400C17F94 /* QueueITEngine.m */; };
 		1DCD49E91B32B12400C17F94 /* QueueService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD49E81B32B12400C17F94 /* QueueService.m */; };
@@ -53,8 +52,6 @@
 		1DCD48F71B29C48500C17F94 /* QueueITViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueITViewController.m; sourceTree = "<group>"; };
 		1DCD48FA1B29C50200C17F94 /* Turn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Turn.h; sourceTree = "<group>"; };
 		1DCD48FB1B29C50200C17F94 /* Turn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Turn.m; sourceTree = "<group>"; };
-		1DCD48FD1B29C50D00C17F94 /* CustomerLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerLogic.h; sourceTree = "<group>"; };
-		1DCD48FE1B29C50D00C17F94 /* CustomerLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerLogic.m; sourceTree = "<group>"; };
 		1DCD49001B2AD29600C17F94 /* ShellViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellViewController.h; sourceTree = "<group>"; };
 		1DCD49011B2AD29600C17F94 /* ShellViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShellViewController.m; sourceTree = "<group>"; };
 		1DCD49031B2B005400C17F94 /* QueueITEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueITEngine.h; sourceTree = "<group>"; };
@@ -174,8 +171,6 @@
 		1DCD48F91B29C4F200C17F94 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1DCD48FD1B29C50D00C17F94 /* CustomerLogic.h */,
-				1DCD48FE1B29C50D00C17F94 /* CustomerLogic.m */,
 				1DCD48FA1B29C50200C17F94 /* Turn.h */,
 				1DCD48FB1B29C50200C17F94 /* Turn.m */,
 				1DCD49EA1B32B4E500C17F94 /* QueueStatus.h */,
@@ -302,7 +297,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DCD49EC1B32B4E500C17F94 /* QueueStatus.m in Sources */,
-				1DCD48FF1B29C50D00C17F94 /* CustomerLogic.m in Sources */,
 				1DCD49021B2AD29600C17F94 /* ShellViewController.m in Sources */,
 				1DCD488E1B299B6400C17F94 /* AppDelegate.m in Sources */,
 				1DCD48F81B29C48500C17F94 /* QueueITViewController.m in Sources */,

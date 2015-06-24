@@ -12,6 +12,8 @@
              eventOrAliasId:(NSString*)eventOrAliasId;
 
 -(void)run;
+-(void)raiseQueuePassed:(NSString *)queueId;
+
 @end
 
 @protocol QueuePassedDelegate <NSObject>
@@ -19,9 +21,3 @@
 -(void)notifyYourTurn:(Turn*)turn;
 
 @end
-
-
-
-
-
-
