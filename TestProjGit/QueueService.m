@@ -28,7 +28,7 @@ static NSString * const API_ROOT = @"http://queue0515-frwitest.test-q.queue-it.n
                                @"userId": userId,
                                @"userAgent": userAgent,
                                @"appType":appType
-                             };
+                               };
     
     NSString* urlAsString = API_ROOT;
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/%@", customerId]];
@@ -38,28 +38,28 @@ static NSString * const API_ROOT = @"http://queue0515-frwitest.test-q.queue-it.n
     return [self submitPUTPath:urlAsString
                           body:bodyDict
                        success:^(NSData *data)
-                       {
-                           NSError *error = nil;
-                           NSDictionary *userDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                           if (userDict && [userDict isKindOfClass:[NSDictionary class]])
-                           {
-                               QueueStatus* queueStatus = [[QueueStatus alloc] initWithDictionary:userDict];
-                               
-                               if (success != NULL) {
-                                   success(queueStatus);
-                               }
-                           }
-                           else
-                           {
-                               if (failure != NULL) {
-                                   failure(error);
-                               }
-                           }
-                       }
+            {
+                NSError *error = nil;
+                NSDictionary *userDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                if (userDict && [userDict isKindOfClass:[NSDictionary class]])
+                {
+                    QueueStatus* queueStatus = [[QueueStatus alloc] initWithDictionary:userDict];
+                    
+                    if (success != NULL) {
+                        success(queueStatus);
+                    }
+                }
+                else
+                {
+                    if (failure != NULL) {
+                        failure(error);
+                    }
+                }
+            }
                        failure:^(NSError *error)
-                       {
-                           failure(error);
-                       }];
+            {
+                failure(error);
+            }];
 }
 
 - (NSString *)submitPUTPath:(NSString *)path

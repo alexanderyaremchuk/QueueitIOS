@@ -28,16 +28,24 @@
 {
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString* queueUrlCached = [defaults stringForKey:key];
+    NSDictionary* url2TTL = [defaults dictionaryForKey:key];
     
-    if (queueUrlCached)
+    if (url2TTL)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
-        });
+        long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
+        long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
+        
+        if (currentTime < cachedTime)
+        {
+            NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
+            });
+        }
     }
     else
     {
@@ -66,57 +74,69 @@
          userId:userId userAgent:userAgent
         appType:appType
         success:^(QueueStatus *queueStatus)
-        {
-             if (queueStatus.errorType != (id)[NSNull null])
-             {
-                 if ([queueStatus.errorType isEqualToString:@"Configuration"])//ISSUE: when incorrect eventId is provided -> Runtime error type is returned instead of Config.
-                 {
-                     @throw [NSException exceptionWithName:@"QueueITConfigurationException" reason:queueStatus.errorMessage userInfo:nil];
-                 }
-                 else if ([queueStatus.errorType isEqualToString:@"Runtime"])
-                 {
-                     @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:queueStatus.errorMessage userInfo:nil];
-                 }
-                 else if ([queueStatus.errorType isEqualToString:@"Validation"])
-                 {
-                     @throw [NSException exceptionWithName:@"QueueITValidationException" reason:queueStatus.errorMessage userInfo:nil];
-                 }
-             }
-             
-             NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
-             
-             if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0) //SafetyNet -> do nothing
-             {
-             }
-             else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //InQueue -> show queue page
-             {
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
-                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
-             }
-             else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //Idle -> show queue page
-             {
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
-             }
-             else if (queueStatus.requeryInterval > 0) //DisableEvent case -> continue polling at requeryInterval
-             {
-                 dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                     [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
-                     });
+     {
+         NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
+         
+         if (queueStatus.errorType != (id)[NSNull null])
+         {
+             [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
+         }
+         if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0) //SafetyNet
+         {
+         }
+         else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //InQueue
+         {
+             [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+             [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
+         }
+         else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //Idle
+         {
+             [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+         }
+         else if (queueStatus.requeryInterval > 0) //DisabledEvent
+         {
+             dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                 [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
                  });
-             }
-        }
+             });
+         }
+     }
         failure:^(NSError *error)
-        {
+     {
          //TODO: for any not 200 http status codes throw custom exception
-        }];
+     }];
 }
 
--(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL customerId:(NSString*)customerId eventId:(NSString*)eventId{
-    NSString * key = [NSString stringWithFormat:@"%@-%@",customerId, eventId];
+-(void)handleServerError:(NSString*)errorType errorMessage:(NSString*)errorMessage
+{
+    if ([errorType isEqualToString:@"Configuration"])
+    {
+        @throw [NSException exceptionWithName:@"QueueITConfigurationException" reason:errorMessage userInfo:nil];
+    }
+    else if ([errorType isEqualToString:@"Runtime"])
+    {
+        @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:errorMessage userInfo:nil];
+    }
+    else if ([errorType isEqualToString:@"Validation"])
+    {
+        @throw [NSException exceptionWithName:@"QueueITValidationException" reason:errorMessage userInfo:nil];
+    }
+}
+
+-(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL customerId:(NSString*)customerId eventId:(NSString*)eventId
+{
+    long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
+    long timeStapm = queueUrlTTL * 1000 * 60 + currentTime;
+    
+    NSString* urlTtlString = [NSString stringWithFormat:@"%li", timeStapm];
+    NSMutableDictionary* url2TTL = [[NSMutableDictionary alloc] init];
+    [url2TTL setObject:urlTtlString forKey:queueUrl];
+    
+    NSString* key = [NSString stringWithFormat:@"%@-%@",customerId, eventId];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:queueUrl forKey:key];
+    [defaults setValue:url2TTL forKey:key];
     [defaults synchronize];
 }
 

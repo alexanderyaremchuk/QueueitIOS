@@ -13,7 +13,7 @@
     
     NSArray *data = @[@"Amelia Tunic", @"Sarasota", @"Arya Tank Top", @"Minka Trapese"];
     NSArray *imagesData = @[@"1.jpeg", @"2.jpeg", @"3.jpeg", @"4.jpeg"];
-
+    
     self.items = [[NSMutableArray alloc]init];
     self.images = [[NSMutableArray alloc]init];
     
@@ -29,7 +29,7 @@
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:@"frwitest" eventOrAliasId:queueEventId];
     self.engine.queuePassedDelegate = self;
     [self.engine run];
-
+    
 }
 
 #pragma mark - Table view data source
