@@ -28,8 +28,6 @@
 {
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     
-    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* url2TTL = [defaults dictionaryForKey:key];
     
@@ -45,6 +43,10 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
             });
+        }
+        else
+        {
+            [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId];
         }
     }
     else
@@ -128,7 +130,8 @@
 -(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL customerId:(NSString*)customerId eventId:(NSString*)eventId
 {
     long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
-    long timeStapm = queueUrlTTL * 1000 * 60 + currentTime;
+    int secondsToAdd = queueUrlTTL * 60.0;
+    long timeStapm = currentTime + secondsToAdd;
     
     NSString* urlTtlString = [NSString stringWithFormat:@"%li", timeStapm];
     NSMutableDictionary* url2TTL = [[NSMutableDictionary alloc] init];
