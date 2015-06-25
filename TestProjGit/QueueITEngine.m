@@ -93,7 +93,7 @@
              {
                  [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
              }
-             else if (queueStatus.requeryInterval > 0) //DisabledEvent
+             else if (queueStatus.requeryInterval > 0) //Disabled
              {
                  dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                      [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
@@ -105,7 +105,7 @@
         }
         failure:^(NSError *error)
         {
-            //TODO: for any not 200 http status codes throw custom exception
+            
         }];
 }
 
