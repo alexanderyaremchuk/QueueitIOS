@@ -25,10 +25,7 @@
         [self.images addObject:item];
     }
     
-    //disabled disabled062015
-    //inqueue queue0515
-    //safetynet safetynet0515
-    NSString* queueEventId = @"safetynet0515";
+    NSString* queueEventId = @"queue0515";
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:@"frwitest" eventOrAliasId:queueEventId];
     self.engine.queuePassedDelegate = self;
     [self.engine run];

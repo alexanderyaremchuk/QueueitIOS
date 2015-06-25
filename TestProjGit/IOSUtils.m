@@ -16,4 +16,14 @@
     return secretAgent;
 }
 
++(NSString*)getLibraryVersion{
+    NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
+    NSString *version = infoDictionary[(NSString*)kCFBundleVersionKey];
+    NSString *libName = infoDictionary[(NSString *)kCFBundleNameKey];
+    NSString* libversion = [NSString stringWithFormat:@"%@-%@", libName, version];
+    
+    return libversion;
+}
+
+
 @end

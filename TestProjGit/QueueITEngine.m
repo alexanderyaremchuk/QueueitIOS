@@ -67,7 +67,7 @@
 -(void)tryEnqueue:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId
 {
     NSString* userId = [IOSUtils getUserId];
-    NSString* userAgent = [IOSUtils getUserAgent];
+    NSString* userAgent = [NSString stringWithFormat:@"%@;%@", [IOSUtils getUserAgent], [IOSUtils getLibraryVersion]];
     NSString* appType = @"iOS";
     
     QueueService* qs = [QueueService sharedInstance];
@@ -76,7 +76,7 @@
          userId:userId userAgent:userAgent
         appType:appType
         success:^(QueueStatus *queueStatus)
-        {
+         {
              if (queueStatus.errorType != (id)[NSNull null])
              {
                  [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
@@ -102,11 +102,11 @@
                      });
                  });
              }
-        }
+         }
         failure:^(NSError *error)
-        {
-            
-        }];
+         {
+             
+         }];
 }
 
 -(void)handleServerError:(NSString*)errorType errorMessage:(NSString*)errorMessage

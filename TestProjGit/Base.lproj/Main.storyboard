@@ -22,7 +22,7 @@
             </objects>
             <point key="canvasLocation" x="1160" y="610"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Tops-->
         <scene sceneID="JQv-KQ-Pxa">
             <objects>
                 <tableViewController id="N28-ra-JXT" customClass="TopsTableViewController" sceneMemberID="viewController">
@@ -43,7 +43,7 @@
                             <outlet property="delegate" destination="N28-ra-JXT" id="Mww-9H-e9g"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="fLC-K1-pSt"/>
+                    <navigationItem key="navigationItem" title="Tops" id="fLC-K1-pSt"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MAw-sh-Jex" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -85,7 +85,7 @@
             </objects>
             <point key="canvasLocation" x="-1161" y="579"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Jewelry-->
         <scene sceneID="OoD-Pg-VnL">
             <objects>
                 <tableViewController id="bfv-q0-uXp" customClass="JewelryTableViewController" sceneMemberID="viewController">
@@ -106,7 +106,7 @@
                             <outlet property="delegate" destination="bfv-q0-uXp" id="GCd-Zx-RXK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="08V-IJ-Gi5"/>
+                    <navigationItem key="navigationItem" title="Jewelry" id="08V-IJ-Gi5"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EFr-Qz-rZQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
