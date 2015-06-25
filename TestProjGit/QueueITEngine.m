@@ -77,8 +77,6 @@
         appType:appType
         success:^(QueueStatus *queueStatus)
         {
-             NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
-             
              if (queueStatus.errorType != (id)[NSNull null])
              {
                  [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
