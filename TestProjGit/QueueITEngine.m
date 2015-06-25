@@ -76,39 +76,39 @@
          userId:userId userAgent:userAgent
         appType:appType
         success:^(QueueStatus *queueStatus)
-     {
-         NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
-         
-         if (queueStatus.errorType != (id)[NSNull null])
-         {
-             [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
-         }
-         if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0) //SafetyNet
-         {
-         }
-         else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //InQueue
-         {
-             [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
-             [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
-         }
-         else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //Idle
-         {
-             [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
-         }
-         else if (queueStatus.requeryInterval > 0) //DisabledEvent
-         {
-             dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                 [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
+        {
+             NSLog(@"queueUrl: %@, requeryInterval: %i", queueStatus.queueUrlString, queueStatus.requeryInterval);
+             
+             if (queueStatus.errorType != (id)[NSNull null])
+             {
+                 [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
+             }
+             if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0) //SafetyNet
+             {
+             }
+             else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //InQueue
+             {
+                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
+             }
+             else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0) //Idle
+             {
+                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+             }
+             else if (queueStatus.requeryInterval > 0) //DisabledEvent
+             {
+                 dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                     [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId];
+                     });
                  });
-             });
-         }
-     }
+             }
+        }
         failure:^(NSError *error)
-     {
-         //TODO: for any not 200 http status codes throw custom exception
-     }];
+        {
+            //TODO: for any not 200 http status codes throw custom exception
+        }];
 }
 
 -(void)handleServerError:(NSString*)errorType errorMessage:(NSString*)errorMessage
