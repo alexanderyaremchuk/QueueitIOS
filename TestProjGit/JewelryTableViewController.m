@@ -25,8 +25,14 @@
         [self.images addObject:item];
     }
     
+    [self initAndRunQueueIt];
+}
+
+-(void)initAndRunQueueIt
+{
     NSString* queueEventId = @"queue0515";
-    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:@"frwitest" eventOrAliasId:queueEventId];
+    NSString* customerId = @"frwitest";
+    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:queueEventId];
     self.engine.queuePassedDelegate = self;
     [self.engine run];
 }
