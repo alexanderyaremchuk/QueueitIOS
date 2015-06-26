@@ -30,9 +30,10 @@
 
 -(void)initAndRunQueueIt
 {
-    NSString* queueEventId = @"queue0515";
     NSString* customerId = @"frwitest";
-    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:queueEventId];
+    NSString* eventAlias = @"iosapp";
+    
+    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias];
     self.engine.queuePassedDelegate = self;
     [self.engine run];
 }
