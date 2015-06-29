@@ -10,6 +10,7 @@
 @property (nonatomic, strong)UIActivityIndicatorView* spinner;
 @property (nonatomic, strong)NSString* customerId;
 @property (nonatomic, strong)NSString* eventId;
+@property BOOL isQueuePassed;
 
 @end
 
@@ -28,6 +29,7 @@
         self.queueUrl = queueUrl;
         self.customerId = customerId;
         self.eventId = eventId;
+        self.isQueuePassed = NO;
     }
     return self;
 }
@@ -80,8 +82,12 @@
     NSString* queueId = [self getQueueId];
     if (queueId)
     {
-        [self.engine raiseQueuePassed:queueId];
-        [self.host dismissViewControllerAnimated:YES completion:nil];
+        if (!self.isQueuePassed)
+        {
+            self.isQueuePassed = YES;
+            [self.engine raiseQueuePassed:queueId];
+            [self.host dismissViewControllerAnimated:YES completion:nil];
+        }
     }
     else
     {
