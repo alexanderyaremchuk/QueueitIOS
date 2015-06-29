@@ -109,7 +109,7 @@
          }
         failure:^(NSError *error)
          {
-             @throw [NSException exceptionWithName:@"QueueITUnexpectedResponseException" reason:[NSString stringWithFormat:@"%@", error.description] userInfo:nil];
+             @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:[NSString stringWithFormat:@"%@", error.description] userInfo:nil];
          }];
 }
 
@@ -121,11 +121,11 @@
     }
     else if ([errorType isEqualToString:@"Runtime"])
     {
-        @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:errorMessage userInfo:nil];
+        @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:errorMessage userInfo:nil];
     }
     else if ([errorType isEqualToString:@"Validation"])
     {
-        @throw [NSException exceptionWithName:@"QueueITValidationException" reason:errorMessage userInfo:nil];
+        @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:errorMessage userInfo:nil];
     }
 }
 
