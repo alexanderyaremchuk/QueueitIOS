@@ -15,8 +15,6 @@
 
 @implementation QueueITViewController
 
-static int loadCount = 0;
-
 -(instancetype)initWithHost:(UIViewController *)host
                 queueEngine:(QueueITEngine*) engine
                    queueUrl:(NSString*)queueUrl
@@ -65,14 +63,12 @@ static int loadCount = 0;
     [self.spinner stopAnimating];
     if (![self.webView isLoading])
     {
-        loadCount++;
         [self runAsync];
     }
-    
-    //if loadCount > 1 -> consider what to do here instead of running [self runAsync]
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
 }
 
 - (void)runAsync
@@ -81,7 +77,7 @@ static int loadCount = 0;
     if (queueId)
     {
         [self.engine raiseQueuePassed:queueId];
-        [self.host dismissModalViewControllerAnimated:YES];
+        [self.host dismissViewControllerAnimated:YES completion:nil];
     }
     else
     {
