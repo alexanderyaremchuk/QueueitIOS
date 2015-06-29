@@ -69,6 +69,10 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+    NSLog(@"Failed to load web view. %@", error.description);
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    [self.host dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)runAsync
