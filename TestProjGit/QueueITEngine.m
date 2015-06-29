@@ -109,7 +109,7 @@
          }
         failure:^(NSError *error)
          {
-             
+             @throw [NSException exceptionWithName:@"QueueITUnexpectedResponseException" reason:[NSString stringWithFormat:@"%@", error.description] userInfo:nil];
          }];
 }
 
