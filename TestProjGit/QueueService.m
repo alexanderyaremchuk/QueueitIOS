@@ -35,31 +35,30 @@ static NSString * const API_ROOT = @"http://%@-%@.test-q.queue-it.net/api/queue"
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/%@", eventorAliasId]];
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/appenqueue"]];
     
-    return [self submitPUTPath:urlAsString
-                          body:bodyDict
-                       success:^(NSData *data)
+    return [self submitPUTPath:urlAsString body:bodyDict
+        success:^(NSData *data)
+        {
+            NSError *error = nil;
+            NSDictionary *userDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            if (userDict && [userDict isKindOfClass:[NSDictionary class]])
             {
-                NSError *error = nil;
-                NSDictionary *userDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                if (userDict && [userDict isKindOfClass:[NSDictionary class]])
-                {
-                    QueueStatus* queueStatus = [[QueueStatus alloc] initWithDictionary:userDict];
-                    
-                    if (success != NULL) {
-                        success(queueStatus);
-                    }
-                }
-                else
-                {
-                    if (failure != NULL) {
-                        failure(error);
-                    }
+                QueueStatus* queueStatus = [[QueueStatus alloc] initWithDictionary:userDict];
+                
+                if (success != NULL) {
+                    success(queueStatus);
                 }
             }
-                       failure:^(NSError *error)
+            else
             {
-                failure(error);
-            }];
+                if (failure != NULL) {
+                    failure(error);
+                }
+            }
+        }
+        failure:^(NSError *error)
+        {
+            failure(error);
+        }];
 }
 
 - (NSString *)submitPUTPath:(NSString *)path
