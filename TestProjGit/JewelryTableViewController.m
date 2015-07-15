@@ -30,7 +30,8 @@
 
 -(void)initAndRunQueueIt
 {
-    NSString* customerId = @"alyatest";
+    //NSString* customerId = @"alyatest";
+    NSString* customerId = @"alex";
     NSString* eventAlias = @"iosapp";
     NSString* layoutName = @"mobileios";
     NSString* language = @"da-DK";
