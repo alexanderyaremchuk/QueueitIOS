@@ -21,6 +21,7 @@ static NSString * const API_ROOT = @"http://%@-%@.test-q.queue-it.net/api/queue"
              userId:(NSString *)userId
           userAgent:(NSString *)userAgent
             appType:(NSString*)appType
+         layoutName:(NSString*)layoutName
             success:(void (^)(QueueStatus *))success
             failure:(QueueServiceFailure)failure
 {
@@ -28,7 +29,7 @@ static NSString * const API_ROOT = @"http://%@-%@.test-q.queue-it.net/api/queue"
                                @"userId": userId,
                                @"userAgent": userAgent,
                                @"appType":appType,
-                               @"layoutName":@"mobileios"
+                               @"layoutName":layoutName
                                };
     
     NSString* urlAsString = [NSString stringWithFormat:API_ROOT, eventorAliasId, customerId];

@@ -31,10 +31,10 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"alyatest";
-    //NSString* customerId = @"frwitest";
     NSString* eventAlias = @"iosapp";
+    NSString* layoutName = @"mobileios";
     
-    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias];
+    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName];
     self.engine.queuePassedDelegate = self;
     [self.engine run];
 }
