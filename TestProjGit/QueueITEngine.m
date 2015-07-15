@@ -10,11 +10,12 @@
 @property (nonatomic, strong)NSString* customerId;
 @property (nonatomic, strong)NSString* eventId;
 @property (nonatomic, strong)NSString* layoutName;
+@property (nonatomic, strong)NSString* language;
 @end
 
 @implementation QueueITEngine
 
--(instancetype)initWithHost:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName
+-(instancetype)initWithHost:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language
 {
     self = [super init];
     if(self) {
@@ -22,6 +23,7 @@
         self.customerId = customerId;
         self.eventId = eventOrAliasId;
         self.layoutName = layoutName;
+        self.language = language;
     }
     return self;
 }
@@ -48,12 +50,12 @@
         }
         else
         {
-            [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName];
+            [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
         }
     }
     else
     {
-        [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName];
+        [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
     }
 }
 
@@ -66,7 +68,7 @@
     [host presentViewController:queueVC animated:YES completion:nil];
 }
 
--(void)tryEnqueue:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName
+-(void)tryEnqueue:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language
 {
     NSString* userId = [IOSUtils getUserId];
     NSString* userAgent = [NSString stringWithFormat:@"%@;%@", [IOSUtils getUserAgent], [IOSUtils getLibraryVersion]];
@@ -78,6 +80,7 @@
          userId:userId userAgent:userAgent
         appType:appType
      layoutName:layoutName
+       language:language
         success:^(QueueStatus *queueStatus)
          {
              if (queueStatus.errorType != (id)[NSNull null])
@@ -105,7 +108,7 @@
                  dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                      [NSThread sleepForTimeInterval:queueStatus.requeryInterval];
                      dispatch_async(dispatch_get_main_queue(), ^{
-                         [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId layoutName:layoutName];
+                         [self tryEnqueue:host customerId:customerId eventOrAliasId:eventOrAliasId layoutName:layoutName language:language];
                      });
                  });
              }

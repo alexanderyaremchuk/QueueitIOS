@@ -13,6 +13,7 @@ typedef void (^QueueServiceFailure)(NSError *error);
           userAgent:(NSString*)userAgent
             appType:(NSString*)appType
          layoutName:(NSString*)layoutName
+           language:(NSString*)language
             success:(void(^)(QueueStatus* queueStatus))success
             failure:(QueueServiceFailure)failure;
 
