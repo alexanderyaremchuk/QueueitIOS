@@ -27,7 +27,8 @@ static NSString * const API_ROOT = @"http://%@-%@.test-q.queue-it.net/api/queue"
     NSDictionary* bodyDict = @{
                                @"userId": userId,
                                @"userAgent": userAgent,
-                               @"appType":appType
+                               @"appType":appType,
+                               @"layoutName":@"mobileios"
                                };
     
     NSString* urlAsString = [NSString stringWithFormat:API_ROOT, eventorAliasId, customerId];

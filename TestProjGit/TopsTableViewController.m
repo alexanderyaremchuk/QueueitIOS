@@ -30,7 +30,8 @@
 
 -(void)initAndRunQueueIt
 {
-    NSString* customerId = @"frwitest";
+    NSString* customerId = @"alyatest";
+    //NSString* customerId = @"frwitest";
     NSString* eventAlias = @"iosapp";
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias];
