@@ -36,8 +36,7 @@
     NSString* layoutName = @"mobileios";
     NSString* language = @"en-US";
     
-    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:nil language:nil];
-    //self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
+    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
     self.engine.queuePassedDelegate = self;
     [self.engine run];
 }

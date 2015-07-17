@@ -83,8 +83,6 @@
        language:language
         success:^(QueueStatus *queueStatus)
          {
-             NSLog(@"url to queue is: %@", queueStatus.queueUrlString);
-             
              if (queueStatus.errorType != (id)[NSNull null])
              {
                  [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
