@@ -38,6 +38,8 @@
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
     self.engine.queuePassedDelegate = self;
+    self.engine.queueViewWillOpenDelegate = self;
+    self.engine.queueDisabledDelegate = self;
     [self.engine run];
 }
 
@@ -61,15 +63,22 @@
     [super didReceiveMemoryWarning];
 }
 
--(void) notifyYourTurn:(Turn *)turn
+-(void) notifyYourTurn:(NSString *)queueId
 {
-    NSLog(@"Your queue number is: %@", turn.queueId);
-    [self.engine run];
-    
-//    NSLog(@"Your queue number is: %@", turn.queueId);
-//    NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", turn.queueId];
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [alert show];
+    NSLog(@"Your queue number is: %@", queueId);
+    NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", queueId];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
+-(void) notifyQueueViewWillOpen:(NSString *)queueId
+{
+    NSLog(@"Queue will open. Your queue number is: %@", queueId);
+}
+
+-(void) notifyQueueDisabled
+{
+    NSLog(@"Queue is disabled");
 }
 
 @end

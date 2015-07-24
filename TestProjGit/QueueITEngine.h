@@ -1,10 +1,13 @@
-#import <Foundation/Foundation.h>
-#import "Turn.h"
+#import <UIKit/UIKit.h>
 
 @protocol QueuePassedDelegate;
+@protocol QueueViewWillOpenDelegate;
+@protocol QueueDisabledDelegate;
 
 @interface QueueITEngine : NSObject
 @property (nonatomic)id<QueuePassedDelegate> queuePassedDelegate;
+@property (nonatomic)id<QueueViewWillOpenDelegate> queueViewWillOpenDelegate;
+@property (nonatomic)id<QueueDisabledDelegate> queueDisabledDelegate;
 @property (nonatomic, strong)NSString* errorMessage;
 
 -(instancetype)initWithHost:(UIViewController *)host
@@ -19,7 +22,13 @@
 @end
 
 @protocol QueuePassedDelegate <NSObject>
+-(void)notifyYourTurn:(NSString*)queueId;
+@end
 
--(void)notifyYourTurn:(Turn*)turn;
+@protocol QueueViewWillOpenDelegate <NSObject>
+-(void)notifyQueueViewWillOpen:(NSString*)queueId;
+@end
 
+@protocol QueueDisabledDelegate <NSObject>
+-(void)notifyQueueDisabled;
 @end

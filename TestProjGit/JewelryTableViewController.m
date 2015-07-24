@@ -58,10 +58,10 @@
     [super didReceiveMemoryWarning];
 }
 
--(void) notifyYourTurn:(Turn *)turn
+-(void) notifyYourTurn:(NSString *)queueId
 {
-    NSLog(@"Your queue number is: %@", turn.queueId);
-    NSString* message = [NSString stringWithFormat: @"Jewelry: You are through the queue. Your queue number is: %@", turn.queueId];
+    NSLog(@"Your queue number is: %@", queueId);
+    NSString* message = [NSString stringWithFormat: @"Jewelry: You are through the queue. Your queue number is: %@", queueId];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
