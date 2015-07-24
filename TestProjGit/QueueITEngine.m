@@ -45,6 +45,7 @@
             NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
             
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self raiseQueueViewWillOpen];
                 [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
             });
         }
@@ -94,7 +95,7 @@
              //InQueue
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 [self raiseQueueViewWillOpen:queueStatus.queueId];
+                 [self raiseQueueViewWillOpen];
                  [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
                  [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
              }
@@ -155,9 +156,9 @@
     [self.queuePassedDelegate notifyYourTurn:queueId];
 }
 
--(void) raiseQueueViewWillOpen:(NSString *)queueId
+-(void) raiseQueueViewWillOpen
 {
-    [self.queueViewWillOpenDelegate notifyQueueViewWillOpen:queueId];
+    [self.queueViewWillOpenDelegate notifyQueueViewWillOpen];
 }
 
 -(void) raiseQueueDisabled

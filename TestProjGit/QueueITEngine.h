@@ -26,7 +26,7 @@
 @end
 
 @protocol QueueViewWillOpenDelegate <NSObject>
--(void)notifyQueueViewWillOpen:(NSString*)queueId;
+-(void)notifyQueueViewWillOpen;
 @end
 
 @protocol QueueDisabledDelegate <NSObject>

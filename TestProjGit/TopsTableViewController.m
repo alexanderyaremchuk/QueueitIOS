@@ -71,9 +71,9 @@
     [alert show];
 }
 
--(void) notifyQueueViewWillOpen:(NSString *)queueId
+-(void) notifyQueueViewWillOpen
 {
-    NSLog(@"Queue will open. Your queue number is: %@", queueId);
+    NSLog(@"Queue will open");
 }
 
 -(void) notifyQueueDisabled
