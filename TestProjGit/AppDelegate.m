@@ -1,12 +1,5 @@
-//
-//  AppDelegate.m
-//  TestProjGit
-//
-//  Created by Alexander Yaremchuk on 6/11/15.
-//  Copyright (c) 2015 Alexander Yaremchuk. All rights reserved.
-//
-
 #import "AppDelegate.h"
+#import "TopsTableViewController.h"
 
 @interface AppDelegate ()
 
@@ -28,6 +21,12 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    [application beginBackgroundTaskWithName:@"runInBackground" expirationHandler:^{ }];
+    
+    NSLog(@"running in the background...");
+    TopsTableViewController* tops = [[TopsTableViewController alloc]init];
+    [tops initAndRunQueueIt];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

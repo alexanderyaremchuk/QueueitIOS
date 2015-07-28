@@ -66,7 +66,12 @@
     if (![self.webView isLoading])
     {
         [self runAsync];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
+}
+
+-(void)appWillResignActive:(NSNotification*)note
+{
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

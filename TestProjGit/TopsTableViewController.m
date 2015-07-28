@@ -65,7 +65,7 @@
 
 -(void) notifyYourTurn:(NSString *)queueId
 {
-    NSLog(@"Your queue number is: %@", queueId);
+    NSLog(@"Your queue number is: %@ : TopsTableViewController", queueId);
     NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", queueId];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
