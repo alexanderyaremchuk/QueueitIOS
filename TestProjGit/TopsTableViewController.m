@@ -41,6 +41,8 @@
     self.engine.queueViewWillOpenDelegate = self;
     self.engine.queueDisabledDelegate = self;
     [self.engine run];
+    
+    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isQutOfQueue ? @"out of" : @"in");
 }
 
 #pragma mark - Table view data source
@@ -65,6 +67,8 @@
 
 -(void) notifyYourTurn:(NSString *)queueId
 {
+    NSLog(@"user is %@ queue: from 'notifyYourTurn", self.engine.isQutOfQueue ? @"out of" : @"in");
+    
     NSLog(@"Your queue number is: %@ : TopsTableViewController", queueId);
     NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", queueId];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
