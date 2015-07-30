@@ -1,5 +1,4 @@
 #import "AppDelegate.h"
-#import "TopsTableViewController.h"
 
 @interface AppDelegate ()
 
@@ -23,10 +22,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     [application beginBackgroundTaskWithName:@"runInBackground" expirationHandler:^{ }];
-    
-    NSLog(@"running in the background...");
-    TopsTableViewController* tops = [[TopsTableViewController alloc]init];
-    [tops initAndRunQueueIt];
+    NSLog(@"running in the background... 'from AppDelegate");
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
