@@ -84,8 +84,6 @@
 
 - (void)runAsync
 {
-    NSLog(@"from runAsync");
-    
     NSString* queueId = [self getQueueId];
     if (queueId)
     {
