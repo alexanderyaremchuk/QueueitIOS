@@ -37,7 +37,7 @@
     
     if (url2TTL)
     {
-        long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
+        long long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
         long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
         
         if (currentTime < cachedTime)
