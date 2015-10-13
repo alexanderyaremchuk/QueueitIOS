@@ -4,8 +4,10 @@
 #import "QueueService.h"
 #import "QueueStatus.h"
 #import "IOSUtils.h"
+#import "Reachability.h"
 
 @interface QueueITEngine()
+@property (nonatomic) Reachability *internetReachability;
 @property (nonatomic, strong)UIViewController* host;
 @property (nonatomic, strong)NSString* customerId;
 @property (nonatomic, strong)NSString* eventId;
@@ -16,8 +18,6 @@
 @end
 
 @implementation QueueITEngine
-
-
 
 -(instancetype)initWithHost:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language presentViewDelay: (int)presentViewDelay
 {
@@ -30,9 +30,31 @@
         self.language = language;
         self.presentViewDelay = presentViewDelay;
         self.isInQueue = NO;
+        self.internetReachability = [Reachability reachabilityForInternetConnection];
     }
     return self;
 }
+
+-(void)checkConnection
+{
+    int count = 0;
+    while (count < 5)
+    {
+        NetworkStatus netStatus = [self.internetReachability currentReachabilityStatus];
+        if (netStatus == NotReachable)
+        {
+            [NSThread sleepForTimeInterval:1.0f];
+            count++;
+        }
+        else
+        {
+            return;
+        }
+    }
+    @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:@"Network connection is unavailable" userInfo:nil];
+}
+
+
 
 -(BOOL)isUserInQueue {
     return self.isInQueue;
@@ -40,6 +62,8 @@
 
 -(void)run
 {
+    [self checkConnection];
+    
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
