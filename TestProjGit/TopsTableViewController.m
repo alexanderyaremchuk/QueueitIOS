@@ -36,13 +36,13 @@
     NSString* layoutName = @"mobileios";
     NSString* language = @"en-US";
     
-    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language presentViewDelay:10];
+    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language presentViewDelay:5];
     self.engine.queuePassedDelegate = self;
     self.engine.queueViewWillOpenDelegate = self;
     self.engine.queueDisabledDelegate = self;
     [self.engine run];
     
-    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isQutOfQueue ? @"out of" : @"in");
+    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
 }
 
 #pragma mark - Table view data source
@@ -67,7 +67,7 @@
 
 -(void) notifyYourTurn:(NSString *)queueId
 {
-    NSLog(@"user is %@ queue: from 'notifyYourTurn", self.engine.isQutOfQueue ? @"out of" : @"in");
+    NSLog(@"user is %@ queue: from 'notifyYourTurn", self.engine.isUserInQueue ? @"in" : @"out of");
     
     NSLog(@"Your queue number is: %@ : TopsTableViewController", queueId);
     NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", queueId];
