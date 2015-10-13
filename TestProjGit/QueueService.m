@@ -2,8 +2,10 @@
 #import "QueueService_NSURLConnection.h"
 
 static QueueService *SharedInstance;
-//static NSString * const API_ROOT = @"http://%@-%@.test-q.queue-it.net/api/queue";
-static NSString * const API_ROOT = @"http://%@-%@.queue-it.net/api/queue";
+//static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
+//static NSString * const API_ROOT = @"http://%@.test-q.queue-it.net/api/queue";
+//static NSString * const API_ROOT = @"http://%@-%@.queue-it.net/api/queue";
+static NSString * const API_ROOT = @"http://%@.queue-it.net/api/queue";
 
 @implementation QueueService
 
@@ -38,7 +40,8 @@ static NSString * const API_ROOT = @"http://%@-%@.queue-it.net/api/queue";
         bodyDict = @{ @"userId": userId, @"userAgent": userAgent, @"appType":appType };
     }
     
-    NSString* urlAsString = [NSString stringWithFormat:API_ROOT, eventorAliasId, customerId];
+    //NSString* urlAsString = [NSString stringWithFormat:API_ROOT, eventorAliasId, customerId];
+    NSString* urlAsString = [NSString stringWithFormat:API_ROOT, customerId];
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/%@", customerId]];
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/%@", eventorAliasId]];
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/appenqueue"]];

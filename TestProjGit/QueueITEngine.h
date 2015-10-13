@@ -14,7 +14,8 @@
                  customerId:(NSString*)customerId
              eventOrAliasId:(NSString*)eventOrAliasId
                  layoutName:(NSString*)layoutName
-                   language:(NSString*)language;
+                   language:(NSString*)language
+           presentViewDelay:(int)presentViewDelay;
 
 -(void)run;
 -(void)raiseQueuePassed:(NSString *)queueId;

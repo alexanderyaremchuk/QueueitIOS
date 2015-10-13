@@ -31,12 +31,12 @@
 -(void)initAndRunQueueIt
 {
     //NSString* customerId = @"alyatest";
-    NSString* customerId = @"alex";
-    NSString* eventAlias = @"iosapp";
+    NSString* customerId = @"sasha";
+    NSString* eventAlias = @"mobile2";
     NSString* layoutName = @"mobileios";
     NSString* language = @"en-US";
     
-    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
+    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language presentViewDelay:10];
     self.engine.queuePassedDelegate = self;
     self.engine.queueViewWillOpenDelegate = self;
     self.engine.queueDisabledDelegate = self;

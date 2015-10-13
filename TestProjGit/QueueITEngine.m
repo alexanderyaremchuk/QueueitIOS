@@ -11,13 +11,14 @@
 @property (nonatomic, strong)NSString* eventId;
 @property (nonatomic, strong)NSString* layoutName;
 @property (nonatomic, strong)NSString* language;
+@property int presentViewDelay;
 @end
 
 @implementation QueueITEngine
 
 bool outOfQueue;
 
--(instancetype)initWithHost:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language
+-(instancetype)initWithHost:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language presentViewDelay: (int)presentViewDelay
 {
     self = [super init];
     if(self) {
@@ -26,6 +27,7 @@ bool outOfQueue;
         self.eventId = eventOrAliasId;
         self.layoutName = layoutName;
         self.language = language;
+        self.presentViewDelay = presentViewDelay;
         outOfQueue = YES;
     }
     return self;
@@ -50,10 +52,12 @@ bool outOfQueue;
         if (currentTime < cachedTime)
         {
             NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
+            [self raiseQueueViewWillOpen];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self raiseQueueViewWillOpen];
-                [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.presentViewDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
+                });
             });
         }
         else
@@ -104,8 +108,10 @@ bool outOfQueue;
              {
                  outOfQueue = NO;
                  [self raiseQueueViewWillOpen];
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
-                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
+                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.presentViewDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                     [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+                     [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
+                 });
              }
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
