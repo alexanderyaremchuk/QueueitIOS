@@ -43,6 +43,11 @@
     self.engine.queueDisabledDelegate = self;
     [self.engine run];
     
+    
+//    for (int i = 0; i < 10; i++) {
+//        [self.engine run];
+//    }
+    
     NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
 }
 
