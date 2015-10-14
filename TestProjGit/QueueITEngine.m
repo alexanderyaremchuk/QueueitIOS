@@ -104,9 +104,7 @@
 
     if (self.delayInterval > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [host presentViewController:queueVC animated:YES completion:nil];
-            });
+            [host presentViewController:queueVC animated:YES completion:nil];
         });
     } else {
         [host presentViewController:queueVC animated:YES completion:nil];
