@@ -68,47 +68,38 @@
 
 -(void)run
 {
-    @try
+    if(self.isRequestInProgress)
     {
-        if(self.isRequestInProgress)
+        @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:@"Equeue request is already in progress" userInfo:nil];
+    }
+    
+    [self checkConnection];
+    
+    NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary* url2TTL = [defaults dictionaryForKey:key];
+    
+    self.isRequestInProgress = YES;
+    
+    if (url2TTL)
+    {
+        long long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
+        long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
+        
+        if (currentTime < cachedTime)
         {
-            @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:@"Equeue request was already in progress" userInfo:nil];
-        }
-        
-        self.isRequestInProgress = YES;
-        
-        [self checkConnection];
-        
-        NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSDictionary* url2TTL = [defaults dictionaryForKey:key];
-        
-        if (url2TTL)
-        {
-            long long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
-            long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
-            
-            if (currentTime < cachedTime)
-            {
-                NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
-                [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
-            }
-            else
-            {
-                [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
-            }
+            NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
+            [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
         }
         else
         {
             [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
         }
-        
     }
-    @catch (NSException *exception)
+    else
     {
-        self.isRequestInProgress = NO;
-        @throw exception;
+        [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
     }
 }
 

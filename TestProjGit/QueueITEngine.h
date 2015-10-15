@@ -20,6 +20,7 @@
 -(void)run;
 -(void)raiseQueuePassed:(NSString *)queueId;
 -(BOOL)isUserInQueue;
+-(BOOL)isRequestInProgress;
 
 @end
 

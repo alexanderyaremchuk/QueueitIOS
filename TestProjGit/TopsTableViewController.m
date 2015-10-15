@@ -41,15 +41,42 @@
     self.engine.queuePassedDelegate = self;
     self.engine.queueViewWillOpenDelegate = self;
     self.engine.queueDisabledDelegate = self;
-    [self.engine run];
     
+    @try
+    {
+        [self.engine run];
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%@", [exception reason]);
+        NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
+        //[NSThread sleepForTimeInterval:2.0f];
+    }
     
-//    for (int i = 0; i < 10; i++) {
-//        [self.engine run];
-//    }
+    [self testMany];
     
     NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
 }
+
+
+-(void) testMany
+{
+    @try
+    {
+        for (int i = 0; i < 10; i++) {
+            [self.engine run];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%@", [exception reason]);
+        NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
+        [NSThread sleepForTimeInterval:2.0f];
+        [self testMany];
+    }
+}
+
+
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
