@@ -50,14 +50,29 @@
     {
         NSLog(@"%@", [exception reason]);
         NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
-        //[NSThread sleepForTimeInterval:2.0f];
     }
     
-    [self testMany];
+    //[self testMany];
+    //[self testSome];
     
     NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
 }
 
+-(void) testSome
+{
+    for (int i = 0; i < 35; i++) {
+        @try
+        {
+            [self.engine run];
+        }
+        @catch (NSException *exception)
+        {
+            NSLog(@"%@", [exception reason]);
+            NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
+            [NSThread sleepForTimeInterval:2.0f];
+        }
+    }
+}
 
 -(void) testMany
 {
@@ -75,8 +90,6 @@
         [self testMany];
     }
 }
-
-
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -106,6 +119,7 @@
     NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", queueId];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+    NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
 }
 
 -(void) notifyQueueViewWillOpen
