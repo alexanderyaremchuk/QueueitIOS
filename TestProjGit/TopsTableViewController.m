@@ -48,8 +48,13 @@
     }
     @catch (NSException *exception)
     {
-        NSLog(@"%@", [exception reason]);
-        NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
+        if ([exception reason] == [self.engine errorTypeEnumToString:NetworkUnavailable]) {
+            NSLog(@"%@", [exception reason]);
+            NSLog(@"Network unavailable was caught in TopsTableViewController");
+            NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
+        } else {
+            NSLog(@"Other exception was caught in TopsTableViewController");
+        }
     }
     
     //[self testMany];
@@ -84,6 +89,12 @@
     }
     @catch (NSException *exception)
     {
+        if ([exception reason] == [self.engine errorTypeEnumToString:RequestAlreadyInProgress]) {
+            NSLog(@"Request already in progress was caught in TopsTableViewController");
+        } else {
+            NSLog(@"Other exception was caught in TopsTableViewController");
+        }
+        
         NSLog(@"%@", [exception reason]);
         NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
         [NSThread sleepForTimeInterval:2.0f];
