@@ -16,6 +16,7 @@
 @property int delayInterval;
 @property bool isInQueue;
 @property bool isRequestInProgress;
+@property (nonatomic, strong)NSString* eventTargetUrl;
 @end
 
 @implementation QueueITEngine
@@ -83,6 +84,8 @@
     
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];//TODO: remove this line
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* url2TTL = [defaults dictionaryForKey:key];
     
@@ -115,7 +118,9 @@
     QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
                                                                      queueEngine:self
                                                                         queueUrl:queueUrl
-                                                                      customerId:customerId eventId:eventId];
+                                                                  eventTargetUrl:self.eventTargetUrl
+                                                                      customerId:customerId
+                                                                         eventId:eventId];
 
     if (self.delayInterval > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -156,6 +161,7 @@
              //InQueue
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
+                 self.eventTargetUrl = queueStatus.eventTargetUrl;
                  [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
                  [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
              }

@@ -3,9 +3,9 @@
 
 static QueueService *SharedInstance;
 //static NSString * const API_ROOT = @"http://test-q.queue-it.net/api/queue";
-//static NSString * const API_ROOT = @"http://%@.test-q.queue-it.net/api/queue";
+static NSString * const API_ROOT = @"http://%@.test-q.queue-it.net/api/queue";
 //static NSString * const API_ROOT = @"http://%@-%@.queue-it.net/api/queue";
-static NSString * const API_ROOT = @"http://%@.queue-it.net/api/queue";
+//static NSString * const API_ROOT = @"http://%@.queue-it.net/api/queue";
 
 @implementation QueueService
 
