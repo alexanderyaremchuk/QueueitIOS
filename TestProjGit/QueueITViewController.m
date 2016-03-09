@@ -70,6 +70,9 @@
     NSLog(@"Requested url: %@", url);
     
     if(url != nil) {
+        
+        [self.engine updateQueuePageUrl:url.absoluteString];
+        
         if ([targetUrl containsString:url.host]) {
             
             NSLog(@"Host: %@", url.host);
@@ -93,7 +96,6 @@
     [self.spinner stopAnimating];
     if (![self.webView isLoading])
     {
-        //[self runAsync];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
 }
@@ -109,37 +111,5 @@
     
     [self.host dismissViewControllerAnimated:YES completion:nil];
 }
-
-//- (void)runAsync
-//{
-//    NSString* queueId = [self getQueueId];
-//    if (queueId)
-//    {
-//        if (!self.isQueuePassed)
-//        {
-//            self.isQueuePassed = YES;
-//            [self.engine raiseQueuePassed:queueId];
-//            [self.host dismissViewControllerAnimated:YES completion:nil];
-//        }
-//    }
-//    else
-//    {
-//        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//            [NSThread sleepForTimeInterval:1.0f];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self runAsync];
-//            });
-//        });
-//    }
-//}
-//
-//-(NSString*)getQueueId
-//{
-//    NSString* queueId = [self.webView stringByEvaluatingJavaScriptFromString:@"GetQueueIdWhenRedirectedToTarget();"];
-//    if ([queueId length] > 0) {
-//        return queueId;
-//    }
-//    return nil;
-//}
 
 @end

@@ -16,6 +16,7 @@
 @property int delayInterval;
 @property bool isInQueue;
 @property bool requestInProgress;
+@property int queueUrlTtl;
 @property (nonatomic, strong)NSString* eventTargetUrl;
 @property (nonatomic, strong)NSString* queueId;
 @end
@@ -166,6 +167,7 @@
              {
                  self.queueId = queueStatus.queueId;
                  self.eventTargetUrl = queueStatus.eventTargetUrl;
+                 self.queueUrlTtl = queueStatus.queueUrlTTL;
                  [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
                  [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
              }
@@ -239,6 +241,13 @@
 -(void) raiseQueueDisabled
 {
     [self.queueDisabledDelegate notifyQueueDisabled];
+}
+
+-(void)updateQueuePageUrl:(NSString *)queuePageUrl
+{
+    //[self updateCache:queuePageUrl urlTTL:self.queueUrlTtl customerId:self.customerId eventId:self.eventId];
+    [self updateCache:queuePageUrl urlTTL:720 customerId:self.customerId eventId:self.eventId];//TODO: fix urlTTL value to be fetched from the cache instead
+
 }
 
 @end

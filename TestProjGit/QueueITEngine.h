@@ -28,6 +28,7 @@ typedef enum {
 -(BOOL)isUserInQueue;
 -(BOOL)isRequestInProgress;
 -(NSString*) errorTypeEnumToString:(QueueITRuntimeError)errorEnumVal;
+-(void)updateQueuePageUrl:(NSString*)queuePageUrl;
 
 @end
 
