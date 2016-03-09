@@ -88,10 +88,16 @@
     
     self.requestInProgress = YES;
     
+    if (![self tryShowQueueFromCache]) {
+        [self tryEnqueue];
+    }
+    
+}
+
+-(BOOL)tryShowQueueFromCache
+{
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
-    
     //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];//TODO: remove this line
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* url2TTL = [defaults dictionaryForKey:key];
     if (url2TTL)
@@ -103,16 +109,10 @@
         {
             NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
             [self showQueue:queueUrlCached];
-        }
-        else
-        {
-            [self tryEnqueue];
+            return YES;
         }
     }
-    else
-    {
-        [self tryEnqueue];
-    }
+    return NO;
 }
 
 -(void)showQueue:(NSString*)queueUrl
