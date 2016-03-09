@@ -15,7 +15,7 @@
 @property (nonatomic, strong)NSString* language;
 @property int delayInterval;
 @property bool isInQueue;
-@property bool isRequestInProgress;
+@property bool requestInProgress;
 @property (nonatomic, strong)NSString* eventTargetUrl;
 @property (nonatomic, strong)NSString* queueId;
 @end
@@ -33,7 +33,7 @@
         self.language = language;
         self.delayInterval = 0;
         self.isInQueue = NO;
-        self.isRequestInProgress = NO;
+        self.requestInProgress = NO;
         self.internetReachability = [Reachability reachabilityForInternetConnection];
     }
     return self;
@@ -72,9 +72,13 @@
     return self.isInQueue;
 }
 
+-(BOOL)isRequestInProgress {
+    return self.requestInProgress;
+}
+
 -(void)run
 {
-    if(self.isRequestInProgress)
+    if(self.requestInProgress)
     {
         @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:[self errorTypeEnumToString:RequestAlreadyInProgress] userInfo:nil];
     }
@@ -82,10 +86,13 @@
     [self checkConnection];
     
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
+    
+    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];//TODO: remove this line
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* url2TTL = [defaults dictionaryForKey:key];
     
-    self.isRequestInProgress = YES;
+    self.requestInProgress = YES;
     
     if (url2TTL)
     {
@@ -146,13 +153,13 @@
          {
              if (queueStatus.errorType != (id)[NSNull null])
              {
-                 self.isRequestInProgress = NO;
+                 self.requestInProgress = NO;
                  [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
              }
              //SafetyNet
              if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 self.isRequestInProgress = NO;
+                 self.requestInProgress = NO;
              }
              //InQueue
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
@@ -170,13 +177,13 @@
              //Disabled
              else if (queueStatus.requeryInterval > 0)
              {
-                 self.isRequestInProgress = NO;
+                 self.requestInProgress = NO;
                  [self raiseQueueDisabled];
              }
          }
         failure:^(NSError *error)
          {
-             self.isRequestInProgress = NO;
+             self.requestInProgress = NO;
              @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:[NSString stringWithFormat:@"%@", error.description] userInfo:nil];
          }];
 }
@@ -219,7 +226,7 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
     
     self.isInQueue = NO;
-    self.isRequestInProgress = NO;
+    self.requestInProgress = NO;
     [self.queuePassedDelegate notifyYourTurn:self.queueId];
 }
 
