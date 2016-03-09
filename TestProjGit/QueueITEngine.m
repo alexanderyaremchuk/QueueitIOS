@@ -79,12 +79,14 @@
 
 -(void)run
 {
+    [self checkConnection];
+    
     if(self.requestInProgress)
     {
         @throw [NSException exceptionWithName:@"QueueITRuntimeException" reason:[self errorTypeEnumToString:RequestAlreadyInProgress] userInfo:nil];
     }
     
-    [self checkConnection];
+    self.requestInProgress = YES;
     
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     
@@ -92,9 +94,6 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* url2TTL = [defaults dictionaryForKey:key];
-    
-    self.requestInProgress = YES;
-    
     if (url2TTL)
     {
         long long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
