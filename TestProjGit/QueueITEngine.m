@@ -82,9 +82,6 @@
     [self checkConnection];
     
     NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
-    
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];//TODO: remove this line
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* url2TTL = [defaults dictionaryForKey:key];
     
