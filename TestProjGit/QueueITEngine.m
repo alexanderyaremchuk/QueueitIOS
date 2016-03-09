@@ -103,53 +103,53 @@
         if (currentTime < cachedTime)
         {
             NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
-            [self showQueue:self.host queueUrl:queueUrlCached customerId:self.customerId eventId:self.eventId];
+            [self showQueue:queueUrlCached];
         }
         else
         {
-            [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
+            [self tryEnqueue];
         }
     }
     else
     {
-        [self tryEnqueue:self.host customerId:self.customerId eventOrAliasId:self.eventId layoutName:self.layoutName language:self.language];
+        [self tryEnqueue];
     }
 }
 
--(void)showQueue:(UIViewController*)host queueUrl:(NSString*)queueUrl customerId:(NSString*)customerId eventId:(NSString*)eventId
+-(void)showQueue:(NSString*)queueUrl
 {
     [self raiseQueueViewWillOpen];
-    QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:host
+    QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:self.host
                                                                      queueEngine:self
                                                                         queueUrl:queueUrl
                                                                   eventTargetUrl:self.eventTargetUrl
-                                                                      customerId:customerId
-                                                                         eventId:eventId];
+                                                                      customerId:self.customerId
+                                                                         eventId:self.eventId];
 
     if (self.delayInterval > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [host presentViewController:queueVC animated:YES completion:nil];
+            [self.host presentViewController:queueVC animated:YES completion:nil];
         });
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [host presentViewController:queueVC animated:YES completion:nil];
+            [self.host presentViewController:queueVC animated:YES completion:nil];
         });
     }
 }
 
--(void)tryEnqueue:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language
+-(void)tryEnqueue
 {
     NSString* userId = [IOSUtils getUserId];
     NSString* userAgent = [NSString stringWithFormat:@"%@;%@", [IOSUtils getUserAgent], [IOSUtils getLibraryVersion]];
     NSString* appType = @"iOS";
     
     QueueService* qs = [QueueService sharedInstance];
-    [qs enqueue:customerId
- eventOrAliasId:eventOrAliasId
+    [qs enqueue:self.customerId
+ eventOrAliasId:self.eventId
          userId:userId userAgent:userAgent
         appType:appType
-     layoutName:layoutName
-       language:language
+     layoutName:self.layoutName
+       language:self.language
         success:^(QueueStatus *queueStatus)
          {
              if (queueStatus.errorType != (id)[NSNull null])
@@ -168,13 +168,13 @@
                  self.queueId = queueStatus.queueId;
                  self.eventTargetUrl = queueStatus.eventTargetUrl;
                  self.queueUrlTtl = queueStatus.queueUrlTTL;
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
-                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
+                 [self showQueue:queueStatus.queueUrlString];
+                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL];
              }
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
+                 [self showQueue:queueStatus.queueUrlString];
              }
              //Disabled
              else if (queueStatus.requeryInterval > 0)
@@ -206,7 +206,7 @@
     }
 }
 
--(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL customerId:(NSString*)customerId eventId:(NSString*)eventId
+-(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL
 {
     long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
     int secondsToAdd = queueUrlTTL * 60.0;
@@ -216,7 +216,7 @@
     NSMutableDictionary* url2TTL = [[NSMutableDictionary alloc] init];
     [url2TTL setObject:urlTtlString forKey:queueUrl];
     
-    NSString* key = [NSString stringWithFormat:@"%@-%@",customerId, eventId];
+    NSString* key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:url2TTL forKey:key];
     [defaults synchronize];
@@ -246,7 +246,7 @@
 -(void)updateQueuePageUrl:(NSString *)queuePageUrl
 {
     //[self updateCache:queuePageUrl urlTTL:self.queueUrlTtl customerId:self.customerId eventId:self.eventId];
-    [self updateCache:queuePageUrl urlTTL:720 customerId:self.customerId eventId:self.eventId];//TODO: fix urlTTL value to be fetched from the cache instead
+    [self updateCache:queuePageUrl urlTTL:720];//TODO: fix urlTTL value to be fetched from the cache instead
 
 }
 
