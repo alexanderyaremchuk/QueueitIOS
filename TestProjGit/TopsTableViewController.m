@@ -33,7 +33,7 @@
     //NSString* customerId = @"alyatest";
     NSString* customerId = @"sasha";
     //NSString* eventAlias = @"ios1";
-    NSString* eventAlias = @"t1";
+    NSString* eventAlias = @"t2";
     NSString* layoutName = @"mobileios";
     NSString* language = @"en-US";
     

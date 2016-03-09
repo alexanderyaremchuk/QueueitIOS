@@ -75,7 +75,7 @@
             NSLog(@"Host: %@", url.host);
             
             self.isQueuePassed = YES;
-            //[self.engine raiseQueuePassed:queueId];
+            [self.engine raiseQueuePassed];
             [self.host dismissViewControllerAnimated:YES completion:nil];
         }
     }

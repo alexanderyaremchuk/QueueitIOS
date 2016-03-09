@@ -17,6 +17,7 @@
 @property bool isInQueue;
 @property bool isRequestInProgress;
 @property (nonatomic, strong)NSString* eventTargetUrl;
+@property (nonatomic, strong)NSString* queueId;
 @end
 
 @implementation QueueITEngine
@@ -66,8 +67,6 @@
     NSArray *errorTypeArray = [[NSArray alloc] initWithObjects:QueueITRuntimeErrorArray];
     return [errorTypeArray objectAtIndex:errorEnumVal];
 }
-
-
 
 -(BOOL)isUserInQueue {
     return self.isInQueue;
@@ -161,6 +160,7 @@
              //InQueue
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
+                 self.queueId = queueStatus.queueId;
                  self.eventTargetUrl = queueStatus.eventTargetUrl;
                  [self showQueue:host queueUrl:queueStatus.queueUrlString customerId:customerId eventId:eventOrAliasId];
                  [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL customerId:customerId eventId:eventOrAliasId];
@@ -216,14 +216,14 @@
     [defaults synchronize];
 }
 
--(void) raiseQueuePassed:(NSString *)queueId
+-(void) raiseQueuePassed
 {
     NSString * key = [NSString stringWithFormat:@"%@-%@", self.customerId, self.eventId];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
     
     self.isInQueue = NO;
     self.isRequestInProgress = NO;
-    [self.queuePassedDelegate notifyYourTurn:queueId];
+    [self.queuePassedDelegate notifyYourTurn:self.queueId];
 }
 
 -(void) raiseQueueViewWillOpen
