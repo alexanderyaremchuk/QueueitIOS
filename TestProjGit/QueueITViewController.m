@@ -71,6 +71,9 @@
     
     if(url != nil) {
         if ([targetUrl containsString:url.host]) {
+            
+            NSLog(@"Host: %@", url.host);
+            
             self.isQueuePassed = YES;
             //[self.engine raiseQueuePassed:queueId];
             [self.host dismissViewControllerAnimated:YES completion:nil];
