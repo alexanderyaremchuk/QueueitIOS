@@ -8,7 +8,8 @@
                    queueUrl:(NSString*)queueUrl
              eventTargetUrl:(NSString*)eventTargetUrl
                  customerId:(NSString*)customerId
-                    eventId:(NSString*)eventId;
+                    eventId:(NSString*)eventId
+                    queueId:(NSString*)queueId;
 
 @end
 

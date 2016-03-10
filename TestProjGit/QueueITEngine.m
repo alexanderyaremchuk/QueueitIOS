@@ -19,7 +19,6 @@ static NSString * KEY_TO_CACHE;
 @property bool isInQueue;
 @property bool requestInProgress;
 @property int queueUrlTtl;
-@property (nonatomic, strong)NSString* queueId;
 @end
 
 @implementation QueueITEngine
@@ -110,14 +109,15 @@ static NSString * KEY_TO_CACHE;
         {
             NSString* queueUrl = cache[@"queueUrl"];
             NSString* targetUrl = cache[@"targetUrl"];
-            [self showQueue:queueUrl targetUrl:targetUrl];
+            NSString* queueId = cache[@"queueId"];
+            [self showQueue:queueUrl targetUrl:targetUrl queueId:queueId];
             return YES;
         }
     }
     return NO;
 }
 
--(void)showQueue:(NSString*)queueUrl targetUrl:(NSString*)targetUrl
+-(void)showQueue:(NSString*)queueUrl targetUrl:(NSString*)targetUrl queueId:(NSString*)queueId
 {
     [self raiseQueueViewWillOpen];
     QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:self.host
@@ -125,7 +125,8 @@ static NSString * KEY_TO_CACHE;
                                                                         queueUrl:queueUrl
                                                                   eventTargetUrl:targetUrl
                                                                       customerId:self.customerId
-                                                                         eventId:self.eventId];
+                                                                         eventId:self.eventId
+                                                                         queueId:queueId];
 
     if (self.delayInterval > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -166,17 +167,16 @@ static NSString * KEY_TO_CACHE;
              //InQueue
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 self.queueId = queueStatus.queueId;
                  self.queueUrlTtl = queueStatus.queueUrlTTL;
-                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl];
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];
                  
                  NSString* urlTtlString = [self convertTtlMinutesToSecondsString:queueStatus.queueUrlTTL];
-                 [self updateCache:queueStatus.queueUrlString urlTTL:urlTtlString targetUrl:queueStatus.eventTargetUrl];
+                 [self updateCache:queueStatus.queueUrlString urlTTL:urlTtlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];
              }
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl];//TODO: make sure queueStatus.eventTargetUrl is passed here from server
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];//TODO: make sure queueStatus.eventTargetUrl and queueStatus.queueId is passed here from server
              }
              //Disabled
              else if (queueStatus.requeryInterval > 0)
@@ -218,25 +218,26 @@ static NSString * KEY_TO_CACHE;
     }
 }
 
--(void)updateCache:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl
+-(void)updateCache:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl queueId:(NSString*) queueId
 {
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
     [values setObject:queueUrl forKey:@"queueUrl"];
     [values setObject:urlTtlString forKey:@"urlTTL"];
     [values setObject:targetUrl forKey:@"targetUrl"];
+    [values setObject:queueId forKey:@"queueId"];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:values forKey:KEY_TO_CACHE];
     [defaults synchronize];
 }
 
--(void) raiseQueuePassed
+-(void) raiseQueuePassed: (NSString*)queueId
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:KEY_TO_CACHE];
     
     self.isInQueue = NO;
     self.requestInProgress = NO;
-    [self.queuePassedDelegate notifyYourTurn:self.queueId];
+    [self.queuePassedDelegate notifyYourTurn:queueId];
 }
 
 -(void) raiseQueueViewWillOpen
@@ -257,7 +258,8 @@ static NSString * KEY_TO_CACHE;
     if (cache) {
         NSString* urlTtlString = cache[@"urlTTL"];
         NSString* targetUrl = cache[@"targetUrl"];
-        [self updateCache:queuePageUrl urlTTL:urlTtlString targetUrl:targetUrl];
+        NSString* queueId = cache[@"queueId"];
+        [self updateCache:queuePageUrl urlTTL:urlTtlString targetUrl:targetUrl queueId:queueId];
     }
 }
 
