@@ -63,26 +63,21 @@
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView
-    shouldStartLoadWithRequest:(NSURLRequest *)request
-    navigationType:(UIWebViewNavigationType)navigationType {
-    
+    shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
     NSURL* url = [webView.request mainDocumentURL];
     NSString* targetUrl = self.eventTargetUrl;
-    
     NSLog(@"Target url: %@", targetUrl);
     NSLog(@"Requested url: %@", url);
-    
     if(url != nil) {
-        
         [self.engine updateQueuePageUrl:url.absoluteString];
         
         if ([targetUrl containsString:url.host]) {
-            
             NSLog(@"Host: %@", url.host);
-            
             self.isQueuePassed = YES;
             [self.engine raiseQueuePassed:self.queueId];
             [self.host dismissViewControllerAnimated:YES completion:nil];
+            return NO;
         }
     }
     

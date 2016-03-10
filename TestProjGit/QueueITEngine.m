@@ -180,7 +180,7 @@ static NSString * const KEY_QUEUE_ID = @"queueId";
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];//TODO: make sure queueStatus.eventTargetUrl and queueStatus.queueId is passed here from server
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];//TODO: queueStatus.queueId is NOT passed here from server. Fix it!
              }
              //Disabled
              else if (queueStatus.requeryInterval > 0)
