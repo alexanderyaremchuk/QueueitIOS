@@ -101,16 +101,16 @@ static NSString * KEY_TO_CACHE;
 {
     //[[NSUserDefaults standardUserDefaults] removeObjectForKey:KEY_TO_CACHE];//TODO: remove this line
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* url2TTL = [defaults dictionaryForKey:KEY_TO_CACHE];
-    if (url2TTL)
+    NSDictionary* cache = [defaults dictionaryForKey:KEY_TO_CACHE];
+    if (cache)
     {
-        long long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
+        NSString* urlTtlString = cache[@"urlTTL"];
+        long long cachedTime = [urlTtlString longLongValue];
         long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
-        
         if (currentTime < cachedTime)
         {
-            NSString* queueUrlCached = [[url2TTL allKeys] objectAtIndex:0];
-            [self showQueue:queueUrlCached];
+            NSString* queueUrl = cache[@"queueUrl"];
+            [self showQueue:queueUrl];
             return YES;
         }
     }
@@ -170,7 +170,7 @@ static NSString * KEY_TO_CACHE;
                  self.eventTargetUrl = queueStatus.eventTargetUrl;
                  self.queueUrlTtl = queueStatus.queueUrlTTL;
                  [self showQueue:queueStatus.queueUrlString];
-                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL];
+                 [self updateCache:queueStatus.queueUrlString urlTTL:queueStatus.queueUrlTTL targetUrl:self.eventTargetUrl];
              }
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
@@ -207,18 +207,20 @@ static NSString * KEY_TO_CACHE;
     }
 }
 
--(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL
+-(void)updateCache:(NSString*)queueUrl urlTTL:(int)queueUrlTTL targetUrl:(NSString*)targetUrl
 {
     long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
     int secondsToAdd = queueUrlTTL * 60.0;
     long timeStapm = currentTime + secondsToAdd;
-    
     NSString* urlTtlString = [NSString stringWithFormat:@"%li", timeStapm];
-    NSMutableDictionary* url2TTL = [[NSMutableDictionary alloc] init];
-    [url2TTL setObject:urlTtlString forKey:queueUrl];
+    
+    NSMutableDictionary *values = [NSMutableDictionary dictionary];
+    [values setObject:queueUrl forKey:@"queueUrl"];
+    [values setObject:urlTtlString forKey:@"urlTTL"];
+    [values setObject:targetUrl forKey:@"targetUrl"];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:url2TTL forKey:KEY_TO_CACHE];
+    [defaults setValue:values forKey:KEY_TO_CACHE];
     [defaults synchronize];
 }
 
@@ -244,8 +246,13 @@ static NSString * KEY_TO_CACHE;
 
 -(void)updateQueuePageUrl:(NSString *)queuePageUrl
 {
-    [self updateCache:queuePageUrl urlTTL:720];//TODO: fix urlTTL value to be fetched from the cache instead
-
+    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //NSDictionary* url2TTL = [defaults dictionaryForKey:KEY_TO_CACHE];
+    
+    
+    
+    
+    [self updateCache:queuePageUrl urlTTL:720 targetUrl:@"http://rzim.org"];//TODO: fix urlTTL value to be fetched from the cache instead
 }
 
 @end
