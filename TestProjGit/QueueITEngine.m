@@ -7,6 +7,10 @@
 #import "Reachability.h"
 
 static NSString * KEY_TO_CACHE;
+static NSString * const KEY_URL_TTL = @"urlTTL";
+static NSString * const KEY_QUEUE_URL = @"queueUrl";
+static NSString * const KEY_TARGET_URL = @"targetUrl";
+static NSString * const KEY_QUEUE_ID = @"queueId";
 
 @interface QueueITEngine()
 @property (nonatomic) Reachability *internetReachability;
@@ -102,14 +106,14 @@ static NSString * KEY_TO_CACHE;
     NSDictionary* cache = [defaults dictionaryForKey:KEY_TO_CACHE];
     if (cache)
     {
-        NSString* urlTtlString = cache[@"urlTTL"];
+        NSString* urlTtlString = cache[KEY_URL_TTL];
         long long cachedTime = [urlTtlString longLongValue];
         long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
         if (currentTime < cachedTime)
         {
-            NSString* queueUrl = cache[@"queueUrl"];
-            NSString* targetUrl = cache[@"targetUrl"];
-            NSString* queueId = cache[@"queueId"];
+            NSString* queueUrl = cache[KEY_QUEUE_URL];
+            NSString* targetUrl = cache[KEY_TARGET_URL];
+            NSString* queueId = cache[KEY_QUEUE_ID];
             [self showQueue:queueUrl targetUrl:targetUrl queueId:queueId];
             return YES;
         }
@@ -221,10 +225,10 @@ static NSString * KEY_TO_CACHE;
 -(void)updateCache:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl queueId:(NSString*) queueId
 {
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
-    [values setObject:queueUrl forKey:@"queueUrl"];
-    [values setObject:urlTtlString forKey:@"urlTTL"];
-    [values setObject:targetUrl forKey:@"targetUrl"];
-    [values setObject:queueId forKey:@"queueId"];
+    [values setObject:queueUrl forKey:KEY_QUEUE_URL];
+    [values setObject:urlTtlString forKey:KEY_URL_TTL];
+    [values setObject:targetUrl forKey:KEY_TARGET_URL];
+    [values setObject:queueId forKey:KEY_QUEUE_ID];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:values forKey:KEY_TO_CACHE];
@@ -256,9 +260,9 @@ static NSString * KEY_TO_CACHE;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* cache = [defaults dictionaryForKey:KEY_TO_CACHE];
     if (cache) {
-        NSString* urlTtlString = cache[@"urlTTL"];
-        NSString* targetUrl = cache[@"targetUrl"];
-        NSString* queueId = cache[@"queueId"];
+        NSString* urlTtlString = cache[KEY_URL_TTL];
+        NSString* targetUrl = cache[KEY_TARGET_URL];
+        NSString* queueId = cache[KEY_QUEUE_ID];
         [self updateCache:queuePageUrl urlTTL:urlTtlString targetUrl:targetUrl queueId:queueId];
     }
 }
