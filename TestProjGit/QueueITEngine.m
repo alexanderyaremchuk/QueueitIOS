@@ -19,7 +19,6 @@ static NSString * KEY_TO_CACHE;
 @property bool isInQueue;
 @property bool requestInProgress;
 @property int queueUrlTtl;
-@property (nonatomic, strong)NSString* eventTargetUrl;
 @property (nonatomic, strong)NSString* queueId;
 @end
 
@@ -110,20 +109,21 @@ static NSString * KEY_TO_CACHE;
         if (currentTime < cachedTime)
         {
             NSString* queueUrl = cache[@"queueUrl"];
-            [self showQueue:queueUrl];
+            NSString* targetUrl = cache[@"targetUrl"];
+            [self showQueue:queueUrl targetUrl:targetUrl];
             return YES;
         }
     }
     return NO;
 }
 
--(void)showQueue:(NSString*)queueUrl
+-(void)showQueue:(NSString*)queueUrl targetUrl:(NSString*)targetUrl
 {
     [self raiseQueueViewWillOpen];
     QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:self.host
                                                                      queueEngine:self
                                                                         queueUrl:queueUrl
-                                                                  eventTargetUrl:self.eventTargetUrl
+                                                                  eventTargetUrl:targetUrl
                                                                       customerId:self.customerId
                                                                          eventId:self.eventId];
 
@@ -167,17 +167,16 @@ static NSString * KEY_TO_CACHE;
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
                  self.queueId = queueStatus.queueId;
-                 self.eventTargetUrl = queueStatus.eventTargetUrl;
                  self.queueUrlTtl = queueStatus.queueUrlTTL;
-                 [self showQueue:queueStatus.queueUrlString];
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl];
                  
                  NSString* urlTtlString = [self convertTtlMinutesToSecondsString:queueStatus.queueUrlTTL];
-                 [self updateCache:queueStatus.queueUrlString urlTTL:urlTtlString targetUrl:self.eventTargetUrl];
+                 [self updateCache:queueStatus.queueUrlString urlTTL:urlTtlString targetUrl:queueStatus.eventTargetUrl];
              }
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 [self showQueue:queueStatus.queueUrlString];
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl];//TODO: make sure queueStatus.eventTargetUrl is passed here from server
              }
              //Disabled
              else if (queueStatus.requeryInterval > 0)
@@ -260,7 +259,6 @@ static NSString * KEY_TO_CACHE;
         NSString* targetUrl = cache[@"targetUrl"];
         [self updateCache:queuePageUrl urlTTL:urlTtlString targetUrl:targetUrl];
     }
-    //[self updateCache:queuePageUrl urlTTL:720 targetUrl:@"http://rzim.org"];//TODO: fix urlTTL value to be fetched from the cache instead
 }
 
 @end
