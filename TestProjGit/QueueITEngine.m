@@ -21,7 +21,6 @@ static NSString * KEY_TO_CACHE;
 @property int queueUrlTtl;
 @property (nonatomic, strong)NSString* eventTargetUrl;
 @property (nonatomic, strong)NSString* queueId;
-//@property static NSString* KEY_TO_CACHE;
 @end
 
 @implementation QueueITEngine
@@ -218,9 +217,8 @@ static NSString * KEY_TO_CACHE;
     NSMutableDictionary* url2TTL = [[NSMutableDictionary alloc] init];
     [url2TTL setObject:urlTtlString forKey:queueUrl];
     
-    NSString* key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:url2TTL forKey:key];
+    [defaults setValue:url2TTL forKey:KEY_TO_CACHE];
     [defaults synchronize];
 }
 
@@ -246,7 +244,6 @@ static NSString * KEY_TO_CACHE;
 
 -(void)updateQueuePageUrl:(NSString *)queuePageUrl
 {
-    //[self updateCache:queuePageUrl urlTTL:self.queueUrlTtl customerId:self.customerId eventId:self.eventId];
     [self updateCache:queuePageUrl urlTTL:720];//TODO: fix urlTTL value to be fetched from the cache instead
 
 }
