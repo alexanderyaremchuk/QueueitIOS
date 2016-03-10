@@ -6,6 +6,8 @@
 #import "IOSUtils.h"
 #import "Reachability.h"
 
+static NSString * KEY_TO_CACHE;
+
 @interface QueueITEngine()
 @property (nonatomic) Reachability *internetReachability;
 @property (nonatomic, strong)UIViewController* host;
@@ -19,6 +21,7 @@
 @property int queueUrlTtl;
 @property (nonatomic, strong)NSString* eventTargetUrl;
 @property (nonatomic, strong)NSString* queueId;
+//@property static NSString* KEY_TO_CACHE;
 @end
 
 @implementation QueueITEngine
@@ -27,6 +30,7 @@
 {
     self = [super init];
     if(self) {
+        KEY_TO_CACHE = [NSString stringWithFormat:@"%@-%@",customerId, eventOrAliasId];
         self.host = host;
         self.customerId = customerId;
         self.eventId = eventOrAliasId;
@@ -96,10 +100,9 @@
 
 -(BOOL)tryShowQueueFromCache
 {
-    NSString * key = [NSString stringWithFormat:@"%@-%@",self.customerId, self.eventId];
-    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:key];//TODO: remove this line
+    //[[NSUserDefaults standardUserDefaults] removeObjectForKey:KEY_TO_CACHE];//TODO: remove this line
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* url2TTL = [defaults dictionaryForKey:key];
+    NSDictionary* url2TTL = [defaults dictionaryForKey:KEY_TO_CACHE];
     if (url2TTL)
     {
         long long cachedTime = [[[url2TTL allValues] objectAtIndex:0] longLongValue];
@@ -223,8 +226,7 @@
 
 -(void) raiseQueuePassed
 {
-    NSString * key = [NSString stringWithFormat:@"%@-%@", self.customerId, self.eventId];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:KEY_TO_CACHE];
     
     self.isInQueue = NO;
     self.requestInProgress = NO;
