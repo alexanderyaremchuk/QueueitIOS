@@ -246,10 +246,13 @@ static NSString * KEY_TO_CACHE;
 
 -(void)updateQueuePageUrl:(NSString *)queuePageUrl
 {
-    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //NSDictionary* url2TTL = [defaults dictionaryForKey:KEY_TO_CACHE];
-    
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary* cache = [defaults dictionaryForKey:KEY_TO_CACHE];
+    if (cache) {
+        NSString* urlTtlString = cache[@"urlTTL"];
+        long long cachedTime = [urlTtlString longLongValue];
+    }
+
     
     
     [self updateCache:queuePageUrl urlTTL:720 targetUrl:@"http://rzim.org"];//TODO: fix urlTTL value to be fetched from the cache instead
