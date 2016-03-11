@@ -213,7 +213,7 @@
     }
 }
 
--(void) raiseQueuePassed: (NSString*)queueId
+-(void) raiseQueuePassed
 {
     [self.cache clear];
     

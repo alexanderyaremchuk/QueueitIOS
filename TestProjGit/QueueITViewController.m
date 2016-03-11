@@ -11,7 +11,6 @@
 @property (nonatomic, strong)UIActivityIndicatorView* spinner;
 @property (nonatomic, strong)NSString* customerId;
 @property (nonatomic, strong)NSString* eventId;
-@property (nonatomic, strong)NSString* queueId;
 @property BOOL isQueuePassed;
 
 @end
@@ -70,7 +69,7 @@
         
         if ([targetUrl containsString:url.host]) {
             self.isQueuePassed = YES;
-            [self.engine raiseQueuePassed:self.queueId];
+            [self.engine raiseQueuePassed];
             [self.host dismissViewControllerAnimated:YES completion:nil];
             return NO;
         }

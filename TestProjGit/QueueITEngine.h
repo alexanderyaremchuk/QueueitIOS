@@ -24,7 +24,7 @@ typedef enum {
 
 -(void)setViewDelay:(int)delayInterval;
 -(void)run;
--(void)raiseQueuePassed:(NSString*)queueId;
+-(void)raiseQueuePassed;
 -(BOOL)isUserInQueue;
 -(BOOL)isRequestInProgress;
 -(NSString*) errorTypeEnumToString:(QueueITRuntimeError)errorEnumVal;
