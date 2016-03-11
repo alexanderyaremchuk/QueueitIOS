@@ -30,6 +30,7 @@
 		1DCD4A051B3AAE0B00C17F94 /* d.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD4A041B3AAE0B00C17F94 /* d.jpeg */; };
 		1DCD4A071B3AAEAC00C17F94 /* c.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD4A061B3AAEAC00C17F94 /* c.jpeg */; };
 		1DCD4A0A1B3AAF6500C17F94 /* JewelryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCD4A091B3AAF6500C17F94 /* JewelryTableViewController.m */; };
+		1DDF312B1C92F3A90036E5EB /* QueueCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDF312A1C92F3A90036E5EB /* QueueCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,8 @@
 		1DCD4A061B3AAEAC00C17F94 /* c.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c.jpeg; sourceTree = "<group>"; };
 		1DCD4A081B3AAF6500C17F94 /* JewelryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JewelryTableViewController.h; sourceTree = "<group>"; };
 		1DCD4A091B3AAF6500C17F94 /* JewelryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JewelryTableViewController.m; sourceTree = "<group>"; };
+		1DDF31291C92F3A90036E5EB /* QueueCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueCache.h; sourceTree = "<group>"; };
+		1DDF312A1C92F3A90036E5EB /* QueueCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +210,8 @@
 				1DCD49EE1B32B9A400C17F94 /* QueueService_NSURLConnection.m */,
 				1DCD49F01B32D6A600C17F94 /* QueueService_NSURLConnectionRequest.h */,
 				1DCD49F11B32D6A600C17F94 /* QueueService_NSURLConnectionRequest.m */,
+				1DDF31291C92F3A90036E5EB /* QueueCache.h */,
+				1DDF312A1C92F3A90036E5EB /* QueueCache.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -338,6 +343,7 @@
 				1DCD488E1B299B6400C17F94 /* AppDelegate.m in Sources */,
 				1DCD48F81B29C48500C17F94 /* QueueITViewController.m in Sources */,
 				1DCD49051B2B005400C17F94 /* QueueITEngine.m in Sources */,
+				1DDF312B1C92F3A90036E5EB /* QueueCache.m in Sources */,
 				1DCD488B1B299B6400C17F94 /* main.m in Sources */,
 				1DCD49F21B32D6A600C17F94 /* QueueService_NSURLConnectionRequest.m in Sources */,
 				1DCD49F51B3403D900C17F94 /* IOSUtils.m in Sources */,
