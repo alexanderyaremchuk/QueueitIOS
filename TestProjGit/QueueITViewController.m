@@ -31,7 +31,6 @@
         self.engine = engine;
         self.queueUrl = queueUrl;
         self.eventTargetUrl = eventTargetUrl;
-        //self.queueUrl = @"http://queueitselenium.test-q.queue-it.net/queue/queueitselenium/iosappqueue02/12528132-2ae8-4844-9acd-be47e361dcb2/?ua=queueitselenium&app=ios";
         self.customerId = customerId;
         self.eventId = eventId;
         self.isQueuePassed = NO;
