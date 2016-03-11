@@ -33,7 +33,7 @@ typedef enum {
 @end
 
 @protocol QueuePassedDelegate <NSObject>
--(void)notifyYourTurn:(NSString*)queueId;
+-(void)notifyYourTurn;
 @end
 
 @protocol QueueViewWillOpenDelegate <NSObject>

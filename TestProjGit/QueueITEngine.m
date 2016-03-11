@@ -106,15 +106,14 @@
         {
             NSString* queueUrl = [self.cache getQueueUrl];
             NSString* targetUrl = [self.cache getTargetUrl];
-            NSString* queueId = [self.cache getQueueId];
-            [self showQueue:queueUrl targetUrl:targetUrl queueId:queueId];
+            [self showQueue:queueUrl targetUrl:targetUrl];
             return YES;
         }
     }
     return NO;
 }
 
--(void)showQueue:(NSString*)queueUrl targetUrl:(NSString*)targetUrl queueId:(NSString*)queueId
+-(void)showQueue:(NSString*)queueUrl targetUrl:(NSString*)targetUrl
 {
     [self raiseQueueViewWillOpen];
     QueueITViewController *queueVC = [[QueueITViewController alloc] initWithHost:self.host
@@ -122,8 +121,7 @@
                                                                         queueUrl:queueUrl
                                                                   eventTargetUrl:targetUrl
                                                                       customerId:self.customerId
-                                                                         eventId:self.eventId
-                                                                         queueId:queueId];
+                                                                         eventId:self.eventId];
 
     if (self.delayInterval > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.delayInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -165,15 +163,15 @@
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
                  self.queueUrlTtl = queueStatus.queueUrlTTL;
-                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl];
                  
                  NSString* urlTtlString = [self convertTtlMinutesToSecondsString:queueStatus.queueUrlTTL];
-                 [self.cache update:queueStatus.queueUrlString urlTTL:urlTtlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];
+                 [self.cache update:queueStatus.queueUrlString urlTTL:urlTtlString targetUrl:queueStatus.eventTargetUrl];
              }
              //Idle
              else if (queueStatus.queueId == (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
-                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl queueId:queueStatus.queueId];//TODO: queueStatus.queueId is NOT passed here from server. Fix it!
+                 [self showQueue:queueStatus.queueUrlString targetUrl:queueStatus.eventTargetUrl];
              }
              //Disabled
              else if (queueStatus.requeryInterval > 0)
@@ -221,7 +219,7 @@
     
     self.isInQueue = NO;
     self.requestInProgress = NO;
-    [self.queuePassedDelegate notifyYourTurn:queueId];
+    [self.queuePassedDelegate notifyYourTurn];
 }
 
 -(void) raiseQueueViewWillOpen
@@ -240,8 +238,7 @@
     if (![self.cache isEmpty]) {
         NSString* urlTtlString = [self.cache getUtlTtl];
         NSString* targetUrl = [self.cache getTargetUrl];
-        NSString* queueId = [self.cache getQueueId];
-        [self.cache update:queuePageUrl urlTTL:urlTtlString targetUrl:targetUrl queueId:queueId];
+        [self.cache update:queuePageUrl urlTTL:urlTtlString targetUrl:targetUrl];
     }
 }
 

@@ -123,12 +123,11 @@
     [super didReceiveMemoryWarning];
 }
 
--(void) notifyYourTurn:(NSString *)queueId
+-(void) notifyYourTurn
 {
     NSLog(@"user is %@ queue: from 'notifyYourTurn", self.engine.isUserInQueue ? @"in" : @"out of");
-    
-    NSLog(@"Your queue number is: %@ : TopsTableViewController", queueId);
-    NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue. Your queue number is: %@", queueId];
+    NSLog(@"TopsTableViewController. There is no more queueId");
+    NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue."];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");

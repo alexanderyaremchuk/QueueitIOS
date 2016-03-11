@@ -7,8 +7,7 @@
 -(NSString*) getUtlTtl;
 -(NSString*) getQueueUrl;
 -(NSString*) getTargetUrl;
--(NSString*) getQueueId;
--(void)update:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl queueId:(NSString*) queueId;
+-(void)update:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl;
 -(void)clear;
 
 @end

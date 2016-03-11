@@ -4,7 +4,6 @@ static NSString * KEY_TO_CACHE;
 static NSString * const KEY_URL_TTL = @"urlTTL";
 static NSString * const KEY_QUEUE_URL = @"queueUrl";
 static NSString * const KEY_TARGET_URL = @"targetUrl";
-static NSString * const KEY_QUEUE_ID = @"queueId";
 
 @implementation QueueCache
 
@@ -54,20 +53,12 @@ static NSDictionary *cache = nil;
     return cache[KEY_TARGET_URL];
 }
 
--(NSString*) getQueueId {
-    if ([self isEmpty]) {
-        [self raiseException];
-    }
-    return cache[KEY_QUEUE_ID];
-}
-
--(void)update:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl queueId:(NSString*) queueId
+-(void)update:(NSString*)queueUrl urlTTL:(NSString*)urlTtlString targetUrl:(NSString*)targetUrl
 {
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
     [values setObject:queueUrl forKey:KEY_QUEUE_URL];
     [values setObject:urlTtlString forKey:KEY_URL_TTL];
     [values setObject:targetUrl forKey:KEY_TARGET_URL];
-    [values setObject:queueId forKey:KEY_QUEUE_ID];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:values forKey:KEY_TO_CACHE];

@@ -24,7 +24,6 @@
              eventTargetUrl:(NSString*)eventTargetUrl
                  customerId:(NSString*)customerId
                     eventId:(NSString*)eventId
-                    queueId:(NSString*)queueId
 {
     self = [super init];
     if(self) {
@@ -35,7 +34,6 @@
         //self.queueUrl = @"http://queueitselenium.test-q.queue-it.net/queue/queueitselenium/iosappqueue02/12528132-2ae8-4844-9acd-be47e361dcb2/?ua=queueitselenium&app=ios";
         self.customerId = customerId;
         self.eventId = eventId;
-        self.queueId = queueId;
         self.isQueuePassed = NO;
     }
     return self;
