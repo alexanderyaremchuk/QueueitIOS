@@ -63,7 +63,8 @@
 {
     NSURL* url = [webView.request mainDocumentURL];
     NSString* targetUrl = self.eventTargetUrl;
-    NSLog(@"Requested url: %@", url);
+    NSLog(@"TARGET URL: %@", targetUrl);
+    NSLog(@"ACTUAL URL: %@", url.host);
     if(url != nil) {
         [self.engine updateQueuePageUrl:url.absoluteString];
         
