@@ -62,21 +62,48 @@
     shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     if (!self.isQueuePassed) {
-        NSURL* url = [webView.request mainDocumentURL];
-        NSString* targetUrl = self.eventTargetUrl;
-        NSLog(@"TARGET URL: %@", targetUrl);
-        NSLog(@"ACTUAL URL: %@", url.host);
-        if(url != nil) {
-            [self.engine updateQueuePageUrl:url.absoluteString];
-            if ([targetUrl containsString:url.host]) {
-                self.isQueuePassed = YES;
-                [self.engine raiseQueuePassed];
-                [self.host dismissViewControllerAnimated:YES completion:nil];
+        NSString* urlString = [[request URL] absoluteString];
+        NSString* targetUrlString = self.eventTargetUrl;
+        
+        if (urlString != nil) {
+            NSURL* url = [NSURL URLWithString:urlString];
+            NSURL* targetUrl = [NSURL URLWithString:targetUrlString];
+            
+            NSLog(@"TARGET URL: %@", targetUrl.host);
+            NSLog(@"ACTUAL URL: %@", url.host);
+            
+            if(urlString != nil && ![urlString isEqualToString:@"about:blank"]) {
+                [self.engine updateQueuePageUrl:urlString];
+                if ([targetUrl.host containsString:url.host]) {
+                    self.isQueuePassed = YES;
+                    [self.engine raiseQueuePassed];
+                    [self.host dismissViewControllerAnimated:YES completion:nil];
+                }
             }
         }
     }
     return YES;
 }
+
+//- (BOOL)webView:(UIWebView *)webView
+//    shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+//{
+//    if (!self.isQueuePassed) {
+//        NSURL* url = [webView.request mainDocumentURL];
+//        NSString* targetUrl = self.eventTargetUrl;
+//        NSLog(@"TARGET URL: %@", targetUrl);
+//        NSLog(@"ACTUAL URL: %@", url.host);
+//        if(url != nil) {
+//            [self.engine updateQueuePageUrl:url.absoluteString];
+//            if ([targetUrl containsString:url.host]) {
+//                self.isQueuePassed = YES;
+//                [self.engine raiseQueuePassed];
+//                [self.host dismissViewControllerAnimated:YES completion:nil];
+//            }
+//        }
+//    }
+//    return YES;
+//}
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
