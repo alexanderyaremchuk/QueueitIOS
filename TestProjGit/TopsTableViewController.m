@@ -43,6 +43,16 @@
     self.engine.queueViewWillOpenDelegate = self;
     self.engine.queueDisabledDelegate = self;
     
+    [self testOne];
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self testSome];
+//    });
+    
+    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
+}
+
+-(void)testOne {
     @try
     {
         [self.engine run];
@@ -57,12 +67,8 @@
             NSLog(@"Other exception was caught in TopsTableViewController");
         }
     }
-    
-    //[self testMany];
-    //[self testSome];
-    
-    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
 }
+
 
 -(void) testSome
 {
