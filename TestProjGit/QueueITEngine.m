@@ -19,9 +19,13 @@
 @property bool requestInProgress;
 @property int queueUrlTtl;
 @property (nonatomic, strong)QueueCache* cache;
+@property int deltaSec;
 @end
 
 @implementation QueueITEngine
+
+static int MAX_RETRY_SEC = 10;
+static int INITIAL_WAIT_RETRY_SEC = 1;
 
 -(instancetype)initWithHost:(UIViewController *)host customerId:(NSString*)customerId eventOrAliasId:(NSString*)eventOrAliasId layoutName:(NSString*)layoutName language:(NSString*)language
 {
@@ -37,6 +41,7 @@
         self.isInQueue = NO;
         self.requestInProgress = NO;
         self.internetReachability = [Reachability reachabilityForInternetConnection];
+        self.deltaSec = INITIAL_WAIT_RETRY_SEC;
     }
     return self;
 }
@@ -187,9 +192,25 @@
          }
         failure:^(NSError *error)
          {
-             self.requestInProgress = NO;
-             @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:[NSString stringWithFormat:@"%@", error.description] userInfo:nil];
+             [self enqueueRetryMonitor];
          }];
+}
+
+-(void)enqueueRetryMonitor
+{
+    if (self.deltaSec < MAX_RETRY_SEC)
+    {
+        [self tryEnqueue];
+        
+        [NSThread sleepForTimeInterval:self.deltaSec];
+        self.deltaSec = self.deltaSec * 2;
+    }
+    else
+    {
+        self.deltaSec = INITIAL_WAIT_RETRY_SEC;
+        self.requestInProgress = NO;
+        @throw [NSException exceptionWithName:@"QueueITUnavailableException" reason:@"QueueIT service is currently unavailable. Please, contact Queue-IT support for assistance" userInfo:nil];
+    }
 }
 
 -(NSString*)convertTtlMinutesToSecondsString:(int)ttlMinutes
