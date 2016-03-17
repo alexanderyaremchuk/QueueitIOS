@@ -34,7 +34,7 @@
     NSString* customerId = @"sasha";
     //NSString* eventAlias = @"ios1";
     //NSString* eventAlias = @"t2";
-    NSString* eventAlias = @"idle1";
+    NSString* eventAlias = @"wed4";
     NSString* layoutName = @"mobileios";
     NSString* language = @"en-US";
     

@@ -104,8 +104,13 @@
         long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
         if (currentTime < cachedTime)
         {
-            NSString* queueUrl = [self.cache getQueueUrl];
             NSString* targetUrl = [self.cache getTargetUrl];
+            
+            NSString* queueUrl = [self.cache getQueueUrl];
+            //queueUrl = [NSString stringWithFormat:@"%@_HELLO_%@", [queueUrl substringToIndex:65], [queueUrl substringFromIndex:67]];
+            
+            NSLog(@"%@",queueUrl);
+            
             [self showQueue:queueUrl targetUrl:targetUrl];
             return YES;
         }
