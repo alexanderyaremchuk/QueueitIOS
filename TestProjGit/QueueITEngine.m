@@ -112,8 +112,7 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
             NSString* targetUrl = [self.cache getTargetUrl];
             
             NSString* queueUrl = [self.cache getQueueUrl];
-            //queueUrl = [NSString stringWithFormat:@"%@_HELLO_%@", [queueUrl substringToIndex:65], [queueUrl substringFromIndex:67]];
-            
+            //queueUrl = [NSString stringWithFormat:@"%@_HELLO_%@", [queueUrl substringToIndex:65], [queueUrl substringFromIndex:67]]; //TODO: remove this line
             NSLog(@"%@",queueUrl);
             
             [self showQueue:queueUrl targetUrl:targetUrl];
