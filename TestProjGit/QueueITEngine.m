@@ -148,13 +148,13 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
 {
     NSString* userId = [IOSUtils getUserId];
     NSString* userAgent = [NSString stringWithFormat:@"%@;%@", [IOSUtils getUserAgent], [IOSUtils getLibraryVersion]];
-    NSString* appType = @"iOS";
+    NSString* sdkVersion = @"iOS-2.0.1";
     
     QueueService* qs = [QueueService sharedInstance];
     [qs enqueue:self.customerId
  eventOrAliasId:self.eventId
          userId:userId userAgent:userAgent
-        appType:appType
+        sdkVersion:sdkVersion
      layoutName:self.layoutName
        language:self.language
         success:^(QueueStatus *queueStatus)
