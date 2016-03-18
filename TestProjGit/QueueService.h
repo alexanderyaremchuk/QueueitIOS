@@ -2,7 +2,7 @@
 #import "QueueStatus.h"
 
 typedef void (^QueueServiceSuccess)(NSData *data);
-typedef void (^QueueServiceFailure)(NSError *error);
+typedef void (^QueueServiceFailure)(NSError *error, NSString* errorMessage);
 
 @interface QueueService : NSObject
 + (QueueService *)sharedInstance;

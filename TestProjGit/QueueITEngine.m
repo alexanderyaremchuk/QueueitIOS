@@ -159,11 +159,6 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
        language:self.language
         success:^(QueueStatus *queueStatus)
          {
-             if (queueStatus.errorType != (id)[NSNull null])
-             {
-                 self.requestInProgress = NO;
-                 [self handleServerError:queueStatus.errorType errorMessage:queueStatus.errorMessage];
-             }
              //SafetyNet
              if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null] && queueStatus.requeryInterval == 0)
              {
@@ -190,9 +185,16 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
                  [self raiseQueueDisabled];
              }
          }
-        failure:^(NSError *error)
+        failure:^(NSError *error, NSString* errorMessage)
          {
-             [self enqueueRetryMonitor];
+             if (error.code >= 400 && error.code < 500)
+             {
+                 @throw [NSException exceptionWithName:@"QueueITConfigurationException" reason:errorMessage userInfo:error.userInfo];
+             }
+             else
+             {
+                 [self enqueueRetryMonitor];
+             }
          }];
 }
 
@@ -220,23 +222,6 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
     long timeStapm = currentTime + secondsToAdd;
     NSString* urlTtlString = [NSString stringWithFormat:@"%li", timeStapm];
     return urlTtlString;
-}
-
-
--(void)handleServerError:(NSString*)errorType errorMessage:(NSString*)errorMessage
-{
-    if ([errorType isEqualToString:@"Configuration"])
-    {
-        @throw [NSException exceptionWithName:@"QueueITConfigurationException" reason:errorMessage userInfo:nil];
-    }
-    else if ([errorType isEqualToString:@"Runtime"])
-    {
-        @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:errorMessage userInfo:nil];
-    }
-    else if ([errorType isEqualToString:@"Validation"])
-    {
-        @throw [NSException exceptionWithName:@"QueueITUnexpectedException" reason:errorMessage userInfo:nil];
-    }
 }
 
 -(void) raiseQueuePassed
