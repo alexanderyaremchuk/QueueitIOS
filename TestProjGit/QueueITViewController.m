@@ -69,6 +69,7 @@
             NSURL* url = [NSURL URLWithString:urlString];
             NSURL* targetUrl = [NSURL URLWithString:targetUrlString];
             NSLog(@"---------------------------------------");
+            NSLog(@"TARGET URL: %@", url.absoluteString);
             NSLog(@"TARGET URL: %@", targetUrl.host);
             NSLog(@"ACTUAL URL: %@", url.host);
             

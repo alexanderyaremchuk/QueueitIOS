@@ -17,6 +17,7 @@
     self.items = [[NSMutableArray alloc]init];
     self.images = [[NSMutableArray alloc]init];
     
+    
     for (NSString *item in data) {
         [self.items addObject:item];
     }
@@ -31,9 +32,9 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"sasha";
-    NSString* eventAlias = @"wed5";
+    NSString* eventAlias = @"3103i";
     NSString* layoutName = @"mobileios";
-    NSString* language = @"en-US";
+    NSString* language = nil;
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
     [self.engine setViewDelay:5];
