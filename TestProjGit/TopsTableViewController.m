@@ -31,25 +31,75 @@
 
 -(void)initAndRunQueueIt
 {
-    NSString* customerId = @"sasha";
-    NSString* eventAlias = @"3103i";
-    NSString* layoutName = @"mobileios";
-    NSString* language = nil;
+    NSString* customerId = @"sasha"; //required
+    NSString* eventAlias = @"3103i"; //required
+    NSString* layoutName = @"mobileios"; //optional (pass nil if no layout specified)
+    NSString* language = @"en-US"; //optional (pass nil if no language specified)
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
-    [self.engine setViewDelay:5];
-    self.engine.queuePassedDelegate = self;
-    self.engine.queueViewWillOpenDelegate = self;
-    self.engine.queueDisabledDelegate = self;
+    [self.engine setViewDelay:5]; //delay parameter you can specify (in case you want to inject some animation before QueueIT-UIWebView will appear
+    self.engine.queuePassedDelegate = self; //invoked once the user is passed the queue
+    self.engine.queueViewWillOpenDelegate = self; //invoked to notify that QueueIT-UIWebView will open
+    self.engine.queueDisabledDelegate = self; //invoked to notify that queue is disabled
+    self.engine.queueITUnavailableDelegate = self; //invoked in case QueueIT is unavailable (500 errors)
     
-    [self testOne];
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self testSome];
-//    });
-    
-    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
+    @try
+    {
+        [self.engine run];
+    }
+    @catch (NSException *exception)
+    {
+        if ([exception reason] == [self.engine errorTypeEnumToString:NetworkUnavailable]) {
+            //thrown when QueueIT detects no internet connectivity
+        } else if ([exception reason] == [self.engine errorTypeEnumToString:RequestAlreadyInProgress]) {
+           //thrown when request to QueueIT has already been made and currently in progress
+        }
+    }
 }
+
+-(void) notifyYourTurn { //callback for engine.queuePassedDelegate
+    NSLog(@"You have been through the queue");
+}
+
+-(void) notifyQueueViewWillOpen { //callback for engine.queueViewWillOpenDelegate
+    NSLog(@"Queue will open");
+}
+
+-(void) notifyQueueDisabled { //callback for engine.queueDisabledDelegate
+    NSLog(@"Queue is disabled");
+}
+
+-(void) notifyQueueITUnavailable { //callback for engine.queueITUnavailableDelegate
+    NSLog(@"QueueIT is currently unavailable");
+}
+
+
+
+
+
+
+
+//-(void)initAndRunQueueIt
+//{
+//    NSString* customerId = @"sasha";
+//    NSString* eventAlias = @"3103i";
+//    NSString* layoutName = @"mobileios";
+//    NSString* language = nil;
+//    
+//    self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
+//    [self.engine setViewDelay:5];
+//    self.engine.queuePassedDelegate = self;
+//    self.engine.queueViewWillOpenDelegate = self;
+//    self.engine.queueDisabledDelegate = self;
+//    
+//    [self testOne];
+//    
+////    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+////        [self testSome];
+////    });
+//    
+//    NSLog(@"user is %@ queue: from initAndRunQueueIt", self.engine.isUserInQueue ? @"in" : @"out of");
+//}
 
 -(void)testOne {
     @try
@@ -128,24 +178,5 @@
     [super didReceiveMemoryWarning];
 }
 
--(void) notifyYourTurn
-{
-    NSLog(@"user is %@ queue: from 'notifyYourTurn", self.engine.isUserInQueue ? @"in" : @"out of");
-    NSLog(@"TopsTableViewController. There is no more queueId");
-    NSString* message = [NSString stringWithFormat: @"Tops: You are through the queue."];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Your turn" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    NSLog(@"isRequestInProgress - %@", self.engine.isRequestInProgress ? @"YES" : @"NO");
-}
-
--(void) notifyQueueViewWillOpen
-{
-    NSLog(@"Queue will open");
-}
-
--(void) notifyQueueDisabled
-{
-    NSLog(@"Queue is disabled");
-}
 
 @end

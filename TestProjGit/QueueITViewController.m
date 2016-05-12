@@ -74,11 +74,15 @@
             NSLog(@"ACTUAL URL: %@", url.host);
             
             if(urlString != nil && ![urlString isEqualToString:@"about:blank"]) {
-                [self.engine updateQueuePageUrl:urlString];
-                if ([targetUrl.host containsString:url.host]) {
-                    self.isQueuePassed = YES;
-                    [self.engine raiseQueuePassed];
-                    [self.host dismissViewControllerAnimated:YES completion:nil];
+                
+                BOOL isFrame = ![[[request URL] absoluteString] isEqualToString:[[request mainDocumentURL] absoluteString]];
+                if (!isFrame) {
+                    [self.engine updateQueuePageUrl:urlString];
+                    if ([targetUrl.host containsString:url.host]) {
+                        self.isQueuePassed = YES;
+                        [self.engine raiseQueuePassed];
+                        [self.host dismissViewControllerAnimated:YES completion:nil];
+                    }
                 }
             }
         }
