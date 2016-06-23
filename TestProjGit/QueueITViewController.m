@@ -88,8 +88,6 @@
                         [[UIApplication sharedApplication] openURL:[request URL]];
                         return NO;
                     }
-                    
-                    
                 }
             }
         }
