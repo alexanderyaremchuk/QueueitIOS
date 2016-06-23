@@ -69,9 +69,10 @@
             NSURL* url = [NSURL URLWithString:urlString];
             NSURL* targetUrl = [NSURL URLWithString:targetUrlString];
             NSLog(@"---------------------------------------");
-            NSLog(@"TARGET URL: %@", url.absoluteString);
-            NSLog(@"TARGET URL: %@", targetUrl.host);
-            NSLog(@"ACTUAL URL: %@", url.host);
+            
+            NSLog(@"TARGET URL-HOST: %@", targetUrl.host);
+            NSLog(@"ACTUAL URL-HOST: %@", url.host);
+            NSLog(@"ACTUAL URL-ABSOLUTE: %@", url.absoluteString);
             
             if(urlString != nil && ![urlString isEqualToString:@"about:blank"]) {
                 
@@ -83,12 +84,20 @@
                         [self.engine raiseQueuePassed];
                         [self.host dismissViewControllerAnimated:YES completion:nil];
                     }
+                    else if (navigationType == UIWebViewNavigationTypeLinkClicked ) {
+                        [[UIApplication sharedApplication] openURL:[request URL]];
+                        return NO;
+                    }
+                    
+                    
                 }
             }
         }
     }
     return YES;
 }
+
+
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
