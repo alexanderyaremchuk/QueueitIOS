@@ -32,7 +32,7 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"sasha"; //required
-    NSString* eventAlias = @"nyc"; //required
+    NSString* eventAlias = @"integrationtest2"; //required
     NSString* layoutName = @"mobileios"; //optional (pass nil if no layout specified)
     NSString* language = @"en-US"; //optional (pass nil if no language specified)
     

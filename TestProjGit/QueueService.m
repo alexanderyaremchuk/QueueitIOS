@@ -57,6 +57,8 @@ static NSString * const API_ROOT = @"http://%@.test-q.queue-it.net/api/queue";
                 if (success != NULL) {
                     success(queueStatus);
                 }
+            } else if (success != NULL) {
+                success(NULL);
             }
         }
         failure:^(NSError *error, NSString* errorMessage)
