@@ -59,6 +59,19 @@
 
 -(void) notifyYourTurn { //callback for engine.queuePassedDelegate
     NSLog(@"You have been through the queue");
+    @try
+    {
+        NSLog(@"Trying enqueue second time");
+        [self.engine run];
+    }
+    @catch (NSException *exception)
+    {
+        if ([exception reason] == [self.engine errorTypeEnumToString:NetworkUnavailable]) {
+            //thrown when QueueIT detects no internet connectivity
+        } else if ([exception reason] == [self.engine errorTypeEnumToString:RequestAlreadyInProgress]) {
+            //thrown when request to QueueIT has already been made and currently in progress
+        }
+    }
 }
 
 -(void) notifyQueueViewWillOpen { //callback for engine.queueViewWillOpenDelegate

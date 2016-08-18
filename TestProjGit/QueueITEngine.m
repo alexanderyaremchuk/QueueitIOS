@@ -229,6 +229,7 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
 
 -(void) raiseQueuePassed
 {
+    NSLog(@"clearing the cache: RAISEQUEUEPASSED");
     [self.cache clear];
     
     self.isInQueue = NO;
