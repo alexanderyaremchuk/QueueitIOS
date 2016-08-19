@@ -75,7 +75,7 @@
             NSLog(@"ACTUAL URL-ABSOLUTE: %@", url.absoluteString);
             
             if(urlString != nil && ![urlString isEqualToString:@"about:blank"]) {
-                
+                BOOL isQueueUrl = [self.queueUrl containsString:url.host];
                 BOOL isFrame = ![[[request URL] absoluteString] isEqualToString:[[request mainDocumentURL] absoluteString]];
                 if (!isFrame) {
                     [self.engine updateQueuePageUrl:urlString];
@@ -84,7 +84,7 @@
                         [self.engine raiseQueuePassed];
                         [self.host dismissViewControllerAnimated:YES completion:nil];
                     }
-                    else if (navigationType == UIWebViewNavigationTypeLinkClicked ) {
+                    else if (navigationType == UIWebViewNavigationTypeLinkClicked && !isQueueUrl) {
                         [[UIApplication sharedApplication] openURL:[request URL]];
                         return NO;
                     }
