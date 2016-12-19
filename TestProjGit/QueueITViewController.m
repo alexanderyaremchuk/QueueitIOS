@@ -78,7 +78,9 @@
                 BOOL isQueueUrl = [self.queueUrl containsString:url.host];
                 BOOL isFrame = ![[[request URL] absoluteString] isEqualToString:[[request mainDocumentURL] absoluteString]];
                 if (!isFrame) {
-                    [self.engine updateQueuePageUrl:urlString];
+                    if (isQueueUrl) {
+                        [self.engine updateQueuePageUrl:urlString];
+                    }
                     if ([targetUrl.host containsString:url.host]) {
                         self.isQueuePassed = YES;
                         [self.engine raiseQueuePassed];
