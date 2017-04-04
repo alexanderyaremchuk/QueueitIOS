@@ -32,8 +32,8 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"sasha"; //required
-    NSString* eventAlias = @"integrationtest2"; //required
-    NSString* layoutName = @"mobileios"; //optional (pass nil if no layout specified)
+    NSString* eventAlias = @"iosapp5"; //required
+    NSString* layoutName = @"Barts"; //optional (pass nil if no layout specified)
     NSString* language = @"en-US"; //optional (pass nil if no language specified)
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
@@ -42,6 +42,7 @@
     self.engine.queueViewWillOpenDelegate = self; //invoked to notify that QueueIT-UIWebView will open
     self.engine.queueDisabledDelegate = self; //invoked to notify that queue is disabled
     self.engine.queueITUnavailableDelegate = self; //invoked in case QueueIT is unavailable (500 errors)
+    self.engine.queueUserExitedDelegate = self;
     
     @try
     {
@@ -84,6 +85,10 @@
 
 -(void) notifyQueueITUnavailable { //callback for engine.queueITUnavailableDelegate
     NSLog(@"QueueIT is currently unavailable");
+}
+
+-(void) notifyUserExited {
+    NSLog(@"Exited...");
 }
 
 
