@@ -86,7 +86,9 @@ static NSString * const JAVASCRIPT_GET_BODY_CLASSES = @"document.getElementsByTa
                     if ([targetUrl.host containsString:url.host]) {
                         self.isQueuePassed = YES;
                         [self.engine raiseQueuePassed];
-                        [self.host dismissViewControllerAnimated:YES completion:nil];
+                        [self.host dismissViewControllerAnimated:YES completion:^{
+                            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                        }];
                     }
                     else if (navigationType == UIWebViewNavigationTypeLinkClicked && !isQueueUrl) {
                         [[UIApplication sharedApplication] openURL:[request URL]];
@@ -131,7 +133,9 @@ static NSString * const JAVASCRIPT_GET_BODY_CLASSES = @"document.getElementsByTa
     NSLog(@"Failed to load web view. %@", error.description);
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    [self.host dismissViewControllerAnimated:YES completion:nil];
+    [self.host dismissViewControllerAnimated:YES completion:^{
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }];
 }
 
 @end
