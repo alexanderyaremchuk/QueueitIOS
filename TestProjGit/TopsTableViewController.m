@@ -83,8 +83,8 @@
     NSLog(@"Queue is disabled");
 }
 
--(void) notifyQueueITUnavailable { //callback for engine.queueITUnavailableDelegate
-    NSLog(@"QueueIT is currently unavailable");
+-(void) notifyQueueITUnavailable: (NSString *) errorMessage { //callback for engine.queueITUnavailableDelegate
+    NSLog(@"%@", errorMessage);
 }
 
 -(void) notifyUserExited {
