@@ -38,7 +38,7 @@ static NSString * const API_ROOT = @"http://%@.test-q.queue-it.net/api/queue";
     }else {
         bodyDict = @{ @"userId": userId, @"userAgent": userAgent, @"sdkVersion":sdkVersion };
     }
-    
+        
     //NSString* urlAsString = [NSString stringWithFormat:API_ROOT, eventorAliasId, customerId];
     NSString* urlAsString = [NSString stringWithFormat:API_ROOT, customerId];
     urlAsString = [urlAsString stringByAppendingString:[NSString stringWithFormat:@"/%@", customerId]];

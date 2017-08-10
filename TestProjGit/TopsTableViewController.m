@@ -32,9 +32,9 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"sasha"; //required
-    NSString* eventAlias = @"iosapp5"; //required
-    NSString* layoutName = @"Barts"; //optional (pass nil if no layout specified)
-    NSString* language = @"en-US"; //optional (pass nil if no language specified)
+    NSString* eventAlias = @"coka1"; //required
+    NSString* layoutName = nil; //optional (pass nil if no layout specified)
+    NSString* language = nil; //optional (pass nil if no language specified)
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
     [self.engine setViewDelay:5]; //delay parameter you can specify (in case you want to inject some animation before QueueIT-UIWebView will appear
