@@ -32,13 +32,14 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"sasha"; //required
-    NSString* eventAlias = @"coka1"; //required
+    NSString* eventAlias = @"safetynet1"; //required
     NSString* layoutName = nil; //optional (pass nil if no layout specified)
     NSString* language = nil; //optional (pass nil if no language specified)
     
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
     [self.engine setViewDelay:5]; //delay parameter you can specify (in case you want to inject some animation before QueueIT-UIWebView will appear
     self.engine.queuePassedDelegate = self; //invoked once the user is passed the queue
+    self.engine.queueTokenDelegate = self;
     self.engine.queueViewWillOpenDelegate = self; //invoked to notify that QueueIT-UIWebView will open
     self.engine.queueDisabledDelegate = self; //invoked to notify that queue is disabled
     self.engine.queueITUnavailableDelegate = self; //invoked in case QueueIT is unavailable (500 errors)
@@ -73,6 +74,10 @@
             //thrown when request to QueueIT has already been made and currently in progress
         }
     }
+}
+
+-(void) notifyQueueToken: (NSString*) queueToken {
+    NSLog(@"QUEUE TOKEN: %@", queueToken);
 }
 
 -(void) notifyQueueViewWillOpen { //callback for engine.queueViewWillOpenDelegate

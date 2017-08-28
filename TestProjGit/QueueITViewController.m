@@ -86,6 +86,7 @@ static NSString * const JAVASCRIPT_GET_BODY_CLASSES = @"document.getElementsByTa
                     if ([targetUrl.host containsString:url.host]) {
                         self.isQueuePassed = YES;
                         [self.engine raiseQueuePassed];
+                        [self extractAndPublishQueueToken:url.absoluteString];
                         [self.host dismissViewControllerAnimated:YES completion:^{
                             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                         }];
@@ -99,6 +100,14 @@ static NSString * const JAVASCRIPT_GET_BODY_CLASSES = @"document.getElementsByTa
         }
     }
     return YES;
+}
+
+- (void)extractAndPublishQueueToken:(NSString*) url {
+    NSString* tokenKey = @"queueittoken=";
+    if ([url containsString:tokenKey]) {
+        NSString* token = [url substringFromIndex:NSMaxRange([url rangeOfString:tokenKey])];
+        [self.engine raiseQueueToken:token];
+    }
 }
 
 

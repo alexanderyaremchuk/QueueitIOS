@@ -237,6 +237,11 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
     [self.queuePassedDelegate notifyYourTurn];
 }
 
+-(void) raiseQueueToken:(NSString*)queueToken
+{
+    [self.queueTokenDelegate notifyQueueToken:queueToken];
+}
+
 -(void) raiseQueueViewWillOpen
 {
     self.isInQueue = YES;
