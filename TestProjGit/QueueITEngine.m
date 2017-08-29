@@ -166,6 +166,9 @@ static int INITIAL_WAIT_RETRY_SEC = 1;
              if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString == (id)[NSNull null])
              {
                  [self raiseQueuePassed];
+                 if (queueStatus.queueitToken != (id)[NSNull null]) {
+                     [self raiseQueueToken:queueStatus.queueitToken];
+                 }
              }
              //InQueue
              else if (queueStatus.queueId != (id)[NSNull null] && queueStatus.queueUrlString != (id)[NSNull null])
