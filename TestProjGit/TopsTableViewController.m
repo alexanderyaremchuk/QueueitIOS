@@ -39,7 +39,6 @@
     self.engine = [[QueueITEngine alloc]initWithHost:self customerId:customerId eventOrAliasId:eventAlias layoutName:layoutName language:language];
     [self.engine setViewDelay:5]; //delay parameter you can specify (in case you want to inject some animation before QueueIT-UIWebView will appear
     self.engine.queuePassedDelegate = self; //invoked once the user is passed the queue
-    self.engine.queueTokenDelegate = self;
     self.engine.queueViewWillOpenDelegate = self; //invoked to notify that QueueIT-UIWebView will open
     self.engine.queueDisabledDelegate = self; //invoked to notify that queue is disabled
     self.engine.queueITUnavailableDelegate = self; //invoked in case QueueIT is unavailable (500 errors)
@@ -59,8 +58,9 @@
     }
 }
 
--(void) notifyYourTurn { //callback for engine.queuePassedDelegate
+-(void) notifyYourTurn: (QueuePassedInfo*) queuePassedInfo { //callback for engine.queuePassedDelegate
     NSLog(@"You have been through the queue");
+    NSLog(@"QUEUEU TOKEN: %@", queuePassedInfo.queueitToken);
     @try
     {
         //NSLog(@"Trying enqueue second time");
@@ -74,10 +74,6 @@
             //thrown when request to QueueIT has already been made and currently in progress
         }
     }
-}
-
--(void) notifyQueueToken: (NSString*) queueToken {
-    NSLog(@"QUEUE TOKEN: %@", queueToken);
 }
 
 -(void) notifyQueueViewWillOpen { //callback for engine.queueViewWillOpenDelegate
