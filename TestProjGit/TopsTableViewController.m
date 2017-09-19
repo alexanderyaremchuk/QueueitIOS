@@ -32,7 +32,7 @@
 -(void)initAndRunQueueIt
 {
     NSString* customerId = @"sasha"; //required
-    NSString* eventAlias = @"safetynet1"; //required
+    NSString* eventAlias = @"postqueue2"; //required
     NSString* layoutName = nil; //optional (pass nil if no layout specified)
     NSString* language = nil; //optional (pass nil if no language specified)
     
