@@ -6,8 +6,8 @@
 @property (nonatomic, strong)NSString* queueUrlString;
 @property (nonatomic, strong) NSString* eventTargetUrl;
 @property (nonatomic, strong) NSString* queueitToken;
-@property bool inPostQueueState;
 @property int queueUrlTTL;
+@property bool inPostQueueState;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
